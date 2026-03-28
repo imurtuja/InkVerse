@@ -134,10 +134,10 @@ export default function LandingPage() {
             </span>
           </div>
           <div className="flex gap-8 text-sm text-[hsl(var(--muted-foreground))]">
-            <Link href="/" className="hover:text-white transition-colors">About</Link>
-            <Link href="/" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="/" className="hover:text-white transition-colors">Terms</Link>
-            <Link href="/" className="hover:text-white transition-colors">Contact</Link>
+            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
           </div>
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
             © 2026 InkVerse Platform. All rights reserved.
