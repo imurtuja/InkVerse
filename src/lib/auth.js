@@ -91,6 +91,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
+        token.username = user.username;
+        token.role = user.role;
+        token.image = user.image;
         await connectDB();
         const dbUser = await User.findOne({ email: user.email });
         if (dbUser) {
@@ -118,5 +122,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET,
 });

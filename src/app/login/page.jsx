@@ -34,8 +34,8 @@ export default function LoginPage() {
         redirect: false,
       });
 
-      if (result?.error) {
-        toast.error(result.error);
+      if (!result || result.error || !result.ok) {
+        toast.error(result?.error ?? "Could not sign in. Check your email and password.");
       } else {
         toast.success("Welcome back!");
         router.push("/feed");
