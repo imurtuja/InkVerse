@@ -26,7 +26,7 @@ const features = [
   { icon: Code2, title: "Code Snippets", desc: "Share code with syntax highlighting for JavaScript, Python, TypeScript, and more.", color: "text-blue-400 bg-blue-500/10" },
   { icon: Feather, title: "Poetry & Shayri", desc: "Post poetry and shayri with preserved line breaks and elegant centered styling.", color: "text-purple-400 bg-purple-500/10" },
   { icon: Quote, title: "Quotes & Wisdom", desc: "Share quotes with beautiful blockquote formatting and proper attribution.", color: "text-amber-400 bg-amber-500/10" },
-  { icon: BookOpen, title: "Rich Markdown", desc: "Full Markdown support — bold, italic, code blocks, lists, headings, and links.", color: "text-emerald-400 bg-emerald-500/10" },
+  { icon: BookOpen, title: "Rich Markdown", desc: "Full Markdown support bold, italic, code blocks, lists, headings, and links.", color: "text-emerald-400 bg-emerald-500/10" },
   { icon: Users, title: "Social Feed", desc: "Follow creators, like and comment on posts, and build your own community.", color: "text-pink-400 bg-pink-500/10" },
   { icon: Activity, title: "Lightning Fast", desc: "Built on Next.js 15 with optimized server rendering and instant navigation.", color: "text-orange-400 bg-orange-500/10" },
 ];
@@ -69,8 +69,8 @@ export default function LandingPage() {
             variants={fadeUp}
             className="text-base sm:text-lg text-[hsl(var(--muted-foreground))] max-w-xl mx-auto mb-10 leading-relaxed"
           >
-            Share code snippets with syntax highlighting, poetry with preserved formatting, 
-            quotes that inspire — all in one beautiful, unified space.
+            Share code snippets with syntax highlighting, poetry with preserved formatting,
+            quotes that inspire all in one beautiful, unified space.
           </motion.p>
 
           <motion.div

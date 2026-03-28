@@ -18,7 +18,7 @@ export const metadata = {
   },
   description: "A professional social ecosystem for developers and poets. Share code snippets with syntax highlighting, elegant poetry, and meaningful quotes.",
   keywords: ["InkVerse", "Murtuja", "Code Sharing", "Poetry Platform", "Shayri", "Developer Social Network", "Text Sharing"],
-  authors: [{ name: "Murtuja", url: "https://murtuja.in" }],
+  authors: [{ name: "Murtuja", url: "https://www.murtuja.in" }],
   creator: "Murtuja",
   openGraph: {
     type: "website",
