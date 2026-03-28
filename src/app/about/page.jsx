@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Feather, Code2, Globe, Shield } from "lucide-react";
 
 export const metadata = {
@@ -14,7 +13,7 @@ export default function AboutPage() {
           Where Code Meets <span className="text-primary-500">Poetry</span>
         </h1>
         <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium leading-relaxed">
-          InkVerse is a professional social ecosystem designed by Murtuja for creators who speak 
+          InkVerse is a professional social ecosystem designed by Murtuja for creators who speak
           in both rhythmic verses and complex algorithms.
         </p>
       </div>
@@ -26,7 +25,7 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-black mb-4">Syntax & Soul</h2>
           <p className="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-            Sharing code shouldn't feel like a chore. Our platform treats code snippets with the 
+            Sharing code shouldn't feel like a chore. Our platform treats code snippets with the
             same elegance as fine literature, featuring professional syntax highlighting.
           </p>
         </div>
@@ -37,7 +36,7 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-black mb-4">Rhythmic Verses</h2>
           <p className="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-            Preserving the formatting of poetry is our core mission. Every line break, Every indent 
+            Preserving the formatting of poetry is our core mission. Every line break, Every indent
             is maintained to ensure your poems read exactly as intended.
           </p>
         </div>
