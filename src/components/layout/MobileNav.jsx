@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Home, Search, PlusCircle, Bell, User } from "lucide-react";
+import { Home, Search, PlusCircle, Bell, User, Shield } from "lucide-react";
 import useStore from "@/store/useStore";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,9 @@ export default function MobileNav() {
     { href: "/search", icon: Search, label: "Search" },
     { href: "/post/new", icon: PlusCircle, label: "Create", special: true },
     { href: "/notifications", icon: Bell, label: "Alerts", badge: unreadCount },
+    ...(session.user?.role === "admin"
+      ? [{ href: "/admin", icon: Shield, label: "Admin" }]
+      : []),
     { href: `/profile/${session.user?.username}`, icon: User, label: "Profile" },
   ];
 

@@ -57,10 +57,10 @@ export default function SignupPage() {
         return;
       }
 
-      toast.success("Verification code sent to your email!");
-      // Temporarily store password for auto-login after verification
+      toast.success("Check your inbox — we sent a code to verify your email.", { duration: 3500 });
       sessionStorage.setItem("pendingPassword", data.password);
-      router.push(`/verify?email=${encodeURIComponent(data.email)}`);
+      await new Promise((r) => setTimeout(r, 300));
+      router.replace(`/verify?email=${encodeURIComponent(data.email)}`);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {

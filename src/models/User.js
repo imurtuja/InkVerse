@@ -69,4 +69,31 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.index({ name: "text", username: "text" });
 
+/** Role may only be changed in MongoDB directly — never via app APIs or Mongoose updates. */
+function stripRoleFromMongoUpdate(update) {
+  if (!update || typeof update !== "object") return;
+  if ("role" in update) delete update.role;
+  if (update.$set && typeof update.$set === "object" && "role" in update.$set) {
+    delete update.$set.role;
+  }
+  if (update.$unset && typeof update.$unset === "object" && "role" in update.$unset) {
+    delete update.$unset.role;
+  }
+}
+
+UserSchema.pre("save", async function () {
+  if (this.isNew) {
+    this.role = "user";
+    return;
+  }
+  if (!this.isModified("role")) return;
+  const prev = await this.constructor.findById(this._id).select("role").lean();
+  if (prev) this.role = prev.role;
+});
+
+UserSchema.pre(["findOneAndUpdate", "updateOne", "updateMany"], function (next) {
+  stripRoleFromMongoUpdate(this.getUpdate());
+  next();
+});
+
 export default mongoose.models.User || mongoose.model("User", UserSchema);

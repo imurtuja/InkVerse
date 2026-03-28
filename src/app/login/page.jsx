@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -16,8 +16,16 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export default function LoginPage() {
+function safeCallbackPath(raw) {
+  if (!raw || typeof raw !== "string") return null;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return null;
+  return raw;
+}
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const afterLoginUrl = safeCallbackPath(searchParams.get("callbackUrl")) ?? "/feed";
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -37,8 +45,9 @@ export default function LoginPage() {
       if (!result || result.error || !result.ok) {
         toast.error(result?.error ?? "Could not sign in. Check your email and password.");
       } else {
-        toast.success("Welcome back!");
-        router.push("/feed");
+        toast.success("Welcome back! Taking you to your feed…", { duration: 2200 });
+        await new Promise((r) => setTimeout(r, 400));
+        router.replace(afterLoginUrl);
         router.refresh();
       }
     } catch (error) {
@@ -49,11 +58,11 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/feed" });
+    signIn("google", { callbackUrl: afterLoginUrl });
   };
 
   const handleGithubSignIn = () => {
-    signIn("github", { callbackUrl: "/feed" });
+    signIn("github", { callbackUrl: afterLoginUrl });
   };
 
   return (
@@ -166,5 +175,19 @@ export default function LoginPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center gradient-mesh">
+          <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }

@@ -293,6 +293,13 @@
 }
 
 /* ===== Button Styles ===== */
+.gradient-text {
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

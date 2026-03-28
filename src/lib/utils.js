@@ -5,6 +5,11 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+/** Safe fragment for MongoDB $regex user input */
+export function escapeRegex(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export const POST_CATEGORIES = [
   { value: "code", label: "Code", icon: "Code2" },
   { value: "poetry", label: "Poetry", icon: "Feather" },

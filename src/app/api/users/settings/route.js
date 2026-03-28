@@ -10,12 +10,17 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { name, bio, image } = await request.json();
+    const body = await request.json();
+    const { name, bio, image } = body;
     await connectDB();
 
     const user = await User.findById(session.user.id);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    if ("role" in body) {
+      return NextResponse.json({ error: "Role cannot be changed here" }, { status: 403 });
     }
 
     if (name) user.name = name;

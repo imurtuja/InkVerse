@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, ShieldCheck, ArrowRight, RefreshCw, PenTool } from "lucide-react";
 import toast from "react-hot-toast";
@@ -11,6 +11,7 @@ import Link from "next/link";
 function VerifyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { update } = useSession();
   const email = searchParams.get("email");
   
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -20,8 +21,8 @@ function VerifyContent() {
 
   useEffect(() => {
     if (!email) {
-      toast.error("Email is missing. redirected to signup.");
-      router.push("/signup");
+      toast.error("Email is missing. Redirecting to sign up.");
+      router.replace("/signup");
     }
     // Auto-focus first input
     if (inputRefs.current[0]) {
@@ -67,28 +68,29 @@ function VerifyContent() {
       if (!res.ok) {
         toast.error(data.error || "Verification failed");
       } else {
-        toast.success("Welcome onboard! ✨");
-        
-        // Auto-login using stored password
         const password = sessionStorage.getItem("pendingPassword");
+        sessionStorage.removeItem("pendingPassword");
+
         if (password) {
           const signInResult = await signIn("credentials", {
             email,
             password,
             redirect: false,
           });
-          
-          sessionStorage.removeItem("pendingPassword");
-          
+
           if (signInResult?.ok) {
-            router.push("/feed");
+            toast.success("You're in! Opening your feed…", { duration: 2500 });
+            await update?.();
+            await new Promise((r) => setTimeout(r, 350));
+            router.replace("/feed");
             router.refresh();
             return;
           }
         }
-        
-        // Fallback if password not found
-        router.push("/login");
+
+        toast.success("Account verified — please sign in.");
+        await new Promise((r) => setTimeout(r, 250));
+        router.replace("/login");
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
@@ -189,7 +191,13 @@ function VerifyContent() {
 
 export default function VerifyPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center gradient-mesh">
+          <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
       <VerifyContent />
     </Suspense>
   );
