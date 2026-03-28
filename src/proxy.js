@@ -4,9 +4,9 @@ import { getToken } from "next-auth/jwt";
 const protectedRoutes = ["/feed", "/post", "/profile", "/notifications", "/settings", "/admin"];
 const authRoutes = ["/login", "/signup"];
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { nextUrl } = request;
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET });
   const isLoggedIn = !!token;
   const isProtected = protectedRoutes.some((route) => nextUrl.pathname.startsWith(route));
   const isAuthRoute = authRoutes.some((route) => nextUrl.pathname.startsWith(route));

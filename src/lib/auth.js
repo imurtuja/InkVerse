@@ -7,6 +7,8 @@ import connectDB from "./db";
 import User from "../models/User";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
+  basePath: "/api/auth",
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -27,9 +29,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("Please enter email and password");
         }
 
+        const email = credentials.email.trim().toLowerCase();
+
         await connectDB();
 
-        const user = await User.findOne({ email: credentials.email }).select("+password");
+        const user = await User.findOne({ email }).select("+password");
 
         if (!user || !user.password) {
           throw new Error("Invalid email or password");

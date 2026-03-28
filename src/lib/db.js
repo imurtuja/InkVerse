@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable in .env.local");
-}
-
 let cached = global.mongoose;
 
 if (!cached) {
@@ -13,6 +9,12 @@ if (!cached) {
 }
 
 async function connectDB() {
+  if (!MONGODB_URI) {
+    throw new Error(
+      "MONGODB_URI is not set. Add it in Vercel Project Settings → Environment Variables (and locally in .env.local)."
+    );
+  }
+
   if (cached.conn) {
     return cached.conn;
   }

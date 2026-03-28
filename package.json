@@ -31,6 +31,11 @@
     "zod": "^4.3.6",
     "zustand": "^5.0.12"
   },
+  "overrides": {
+    "@auth/core": {
+      "nodemailer": "$nodemailer"
+    }
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
