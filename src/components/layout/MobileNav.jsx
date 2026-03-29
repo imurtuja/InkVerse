@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 import { Home, Search, PlusCircle, Bell, User, Shield } from "lucide-react";
 import useStore from "@/store/useStore";
 import { cn } from "@/lib/utils";
@@ -26,8 +27,8 @@ export default function MobileNav() {
   ];
 
   return (
-    <nav className="glass-nav fixed bottom-0 left-0 right-0 z-50 md:hidden">
-      <div className="flex items-center justify-around py-1.5 px-2">
+    <nav className="fixed bottom-6 left-6 right-6 z-50 md:hidden max-w-sm mx-auto">
+      <div className="relative flex items-center justify-between p-1.5 bg-white/95 dark:bg-[#111111]/95 backdrop-blur-3xl border border-gray-200/60 dark:border-white/10 rounded-full shadow-[0_20px_40px_-5px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)]">
         {links.map((link) => {
           const Icon = link.icon;
           const isActive = pathname === link.href || (link.href !== "/feed" && pathname.startsWith(link.href));
@@ -36,22 +37,37 @@ export default function MobileNav() {
               key={link.href}
               href={link.href}
               className={cn(
-                "relative flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all duration-200",
-                isActive ? "text-accent-500" : "text-[hsl(var(--muted-foreground))]"
+                "relative z-10 flex flex-row items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-full transition-all duration-300 ease-out",
+                isActive ? "text-white" : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
               )}
             >
-              {link.special ? (
-                <div className="w-10 h-10 -mt-5 rounded-full bg-accent-500 flex items-center justify-center shadow-lg shadow-accent-500/30">
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-              ) : (
-                <Icon className="w-5 h-5" />
+              {isActive && (
+                <motion.div
+                  layoutId="zomatoActivePill"
+                  className="absolute inset-0 bg-gray-900 dark:bg-white rounded-full z-0 shadow-sm"
+                  transition={{ type: "spring", bounce: 0.25, duration: 0.55 }}
+                />
               )}
-              <span className={cn("text-[10px] font-medium", link.special && "mt-0.5")}>{link.label}</span>
-              {link.badge > 0 && (
-                <span className="absolute -top-0.5 right-1 w-3.5 h-3.5 bg-red-500 text-white text-[7px] font-bold rounded-full flex items-center justify-center">
-                  {link.badge > 9 ? "9+" : link.badge}
-                </span>
+              <div className="relative z-10">
+                <Icon 
+                  strokeWidth={isActive ? 2.5 : 2} 
+                  className={cn("w-[20px] h-[20px] transition-colors duration-300", isActive ? "text-white dark:text-black" : "")} 
+                />
+                {link.badge > 0 && (
+                  <span className="absolute -top-1 -right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-[#111111] shadow-sm z-20">
+                    {link.badge > 9 ? "9+" : link.badge}
+                  </span>
+                )}
+              </div>
+              {isActive && (
+                <motion.span 
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="relative z-10 text-[13px] font-bold tracking-wide transition-all duration-300 text-white dark:text-black overflow-hidden whitespace-nowrap block"
+                >
+                  {link.label}
+                </motion.span>
               )}
             </Link>
           );

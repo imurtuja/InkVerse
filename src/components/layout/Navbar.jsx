@@ -125,48 +125,28 @@ export default function Navbar() {
               </Link>
 
               <div className="relative">
-                <button
-                  onClick={() => setMenuOpen(!menuOpen)}
-                  className="w-9 h-9 rounded-full border-2 border-transparent hover:border-blue-500/50 transition-all overflow-hidden bg-gray-200 dark:bg-white/10"
-                >
-                  {session.user?.image ? (
-                    <img src={session.user.image} alt="" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center font-bold text-gray-600 dark:text-white">
-                      {session.user?.name?.[0]?.toUpperCase()}
-                    </div>
-                  )}
-                </button>
-
-                <AnimatePresence>
-                  {menuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute right-0 mt-3 w-56 p-2 bg-white dark:bg-[#0b101a] border border-gray-100 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
-                    >
-                      <div className="px-3 py-3 border-b border-gray-50 dark:border-white/5 mb-1">
-                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{session.user?.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">@{session.user?.username}</p>
+                {pathname === `/profile/${session.user?.username}` ? (
+                  <button
+                    onClick={() => signOut()}
+                    title="Log Out"
+                    className="w-10 h-10 rounded-full bg-red-50 dark:bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-500/20 transition-all border border-red-100 dark:border-red-500/20 shadow-sm"
+                  >
+                    <LogOut className="w-4 h-4 ml-0.5" />
+                  </button>
+                ) : (
+                  <Link
+                    href={`/profile/${session.user?.username}`}
+                    className="block w-10 h-10 rounded-full border-2 border-transparent hover:border-blue-500/50 transition-all overflow-hidden bg-gray-200 dark:bg-white/10 shadow-sm cursor-pointer"
+                  >
+                    {session.user?.image ? (
+                      <img src={session.user.image} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center font-bold text-gray-600 dark:text-white">
+                        {session.user?.name?.[0]?.toUpperCase()}
                       </div>
-                      <Link href={`/profile/${session.user?.username}`} onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-colors">
-                        <User className="w-4 h-4" /> Profile
-                      </Link>
-                      <Link href="/settings" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-colors">
-                        <Settings className="w-4 h-4" /> Settings
-                      </Link>
-                      {session.user?.role === "admin" && (
-                        <Link href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-amber-600 hover:bg-amber-50 rounded-xl transition-colors">
-                          <Shield className="w-4 h-4" /> Admin
-                        </Link>
-                      )}
-                      <button onClick={() => signOut()} className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors mt-1">
-                        <LogOut className="w-4 h-4" /> Log out
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    )}
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -188,8 +168,10 @@ export default function Navbar() {
             >
               {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <Link href="/login" className="text-sm font-bold text-gray-700 dark:text-gray-300 px-4 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-all">Log in</Link>
-            <Link href="/signup" className="text-sm font-bold text-white bg-blue-600 px-5 py-2.5 rounded-xl shadow-lg shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">Get Started</Link>
+            <div className="hidden sm:flex items-center gap-3">
+              <Link href="/login" className="text-sm font-bold text-gray-700 dark:text-gray-300 px-4 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-all">Log in</Link>
+              <Link href="/signup" className="text-sm font-bold text-white bg-blue-600 px-5 py-2.5 rounded-xl shadow-lg shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">Get Started</Link>
+            </div>
           </div>
         </div>
       </div>

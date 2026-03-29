@@ -3,8 +3,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
-export default function Modal({ isOpen, onClose, title, children, maxWidth = "max-w-md" }) {
+export default function Modal({ isOpen, onClose, title, children, maxWidth = "max-w-md", position = "center" }) {
   // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -20,7 +21,9 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = "ma
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className={cn("fixed inset-0 z-[100] flex p-4 sm:p-6", 
+          position === "top-right" ? "items-start justify-end mt-16 sm:mt-24" : "items-center justify-center"
+        )}>
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}

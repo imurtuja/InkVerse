@@ -36,7 +36,7 @@ export function formatDate(date, full = false) {
   if (full) {
     const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    return `${dateStr} at ${timeStr}`;
+    return `${timeStr} · ${dateStr}`;
   }
 
   const now = new Date();
