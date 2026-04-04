@@ -68,18 +68,18 @@ function SearchContent() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
-      <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white md:hidden">
-        <SearchIcon className="w-6 h-6 text-primary-500" /> Search
+    <div className="max-w-2xl mx-auto px-4 md:px-0 py-4 space-y-4">
+      <h1 className="text-xl font-bold leading-tight flex items-center gap-2 text-gray-900 dark:text-white md:hidden">
+        <SearchIcon className="w-5 h-5 text-primary-500" /> Search
       </h1>
  
       <form onSubmit={handleSubmit} className="relative group md:hidden">
-        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
+        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search posts, users, tags..."
-          className="w-full pl-12 pr-12 py-3.5 rounded-2xl glass-card text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all bg-white/70 dark:bg-black/40 border-gray-200 dark:border-white/10"
+          className="w-full pl-10 pr-12 py-2.5 rounded-xl glass-card text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all bg-white/70 dark:bg-black/40 border-gray-200 dark:border-white/10 h-10"
         />
         {query && (
           <button 
@@ -92,7 +92,7 @@ function SearchContent() {
         )}
       </form>
 
-      <div className="flex gap-2">
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
         {[
           { value: "all", label: "All" }, 
           { value: "posts", label: "Posts", icon: FileText }, 
@@ -102,13 +102,13 @@ function SearchContent() {
             key={t.value}
             onClick={() => { setType(t.value); search(query, t.value); }}
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2",
+              "px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border uppercase tracking-wider",
               type === t.value
-                ? "bg-primary-500 text-white shadow-lg shadow-primary-500/20"
-                : "glass bg-white/40 dark:bg-white/5 border border-gray-100 dark:border-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-gray-200"
+                ? "bg-primary-600 text-white border-primary-600 shadow-sm"
+                : "bg-white/50 dark:bg-white/5 border-gray-100 dark:border-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
             )}
           >
-            {t.icon && <t.icon className="w-4 h-4" />}
+            {t.icon && <t.icon className="w-3.5 h-3.5" />}
             {t.label}
           </button>
         ))}
@@ -121,10 +121,10 @@ function SearchContent() {
           ))}
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-5">
           {users.length > 0 && (type === "all" || type === "users") && (
             <div className="space-y-3">
-              <h2 className="text-[13px] font-black uppercase tracking-[0.1em] text-gray-500/80">Users</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500/80">Users</h2>
               <div className="grid gap-3">
                 {users.map((user) => (
                   <Link 
@@ -132,7 +132,7 @@ function SearchContent() {
                     href={`/profile/${user.username}`} 
                     className="glass-card rounded-xl p-3.5 flex items-center gap-3 bg-white/60 dark:bg-black/40 border border-gray-100 dark:border-white/5 hover:scale-[1.01] transition-all hover:border-primary-500/30"
                   >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center text-white font-bold overflow-hidden shadow-sm">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center text-white text-xs font-bold overflow-hidden shadow-sm">
                       {user.image ? <img src={user.image} alt="" className="w-full h-full object-cover" /> : user.name?.[0]?.toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -147,7 +147,7 @@ function SearchContent() {
 
           {posts.length > 0 && (type === "all" || type === "posts") && (
             <div className="space-y-4">
-              <h2 className="text-[13px] font-black uppercase tracking-[0.1em] text-gray-500/80">Posts</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500/80">Posts</h2>
               {posts.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
@@ -155,15 +155,17 @@ function SearchContent() {
           )}
 
           {!loading && initialQuery && posts.length === 0 && users.length === 0 && (
-            <div className="text-center py-16 text-gray-400 bg-white/30 dark:bg-white/5 rounded-3xl border border-dashed border-gray-200 dark:border-white/10">
-              <SearchIcon className="w-12 h-12 mx-auto mb-3 opacity-30" />
-              <p className="font-medium">No results found for &ldquo;{initialQuery}&rdquo;</p>
+            <div className="text-center py-20 bg-white/40 dark:bg-white/5 rounded-xl border border-dashed border-gray-200 dark:border-white/10">
+              <SearchIcon className="w-8 h-8 mx-auto mb-3 text-gray-300 dark:text-gray-700" />
+              <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">No results found</p>
+              <p className="text-xs text-gray-400 mt-1 italic">&ldquo;{initialQuery}&rdquo;</p>
             </div>
           )}
 
           {!loading && !initialQuery && (
-            <div className="text-center py-20 opacity-30">
-              <p className="text-lg font-bold italic tracking-tight">Explore the Verse</p>
+            <div className="text-center py-24">
+              <SearchIcon className="w-8 h-8 mx-auto mb-4 text-gray-200 dark:text-gray-800" />
+              <p className="text-xs font-bold text-gray-400 dark:text-gray-600 uppercase tracking-[0.2em]">Start Exploring</p>
             </div>
           )}
         </div>
@@ -174,7 +176,7 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="max-w-2xl mx-auto px-4 py-8"><div className="h-12 glass-card rounded-2xl animate-pulse" /></div>}>
+    <Suspense fallback={<div className="max-w-2xl mx-auto px-4 md:px-0 py-6"><div className="h-10 glass-card rounded-xl animate-pulse" /></div>}>
       <SearchContent />
     </Suspense>
   );

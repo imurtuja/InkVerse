@@ -40,11 +40,10 @@ export default function EditPostPage({ params }) {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="h-8 w-48 skeleton mb-6" />
-        <div className="glass-card rounded-2xl p-6 space-y-4">
-          <div className="h-12 skeleton" />
-          <div className="h-64 skeleton" />
+      <div className="min-h-screen bg-[#030712] pt-20">
+        <div className="max-w-3xl mx-auto px-4 py-8 animate-pulse space-y-4">
+          <div className="h-4 w-24 bg-white/5 rounded"></div>
+          <div className="h-[400px] w-full bg-white/[0.02] border border-white/10 rounded-2xl shadow-xl shadow-black/20"></div>
         </div>
       </div>
     );

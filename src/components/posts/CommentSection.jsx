@@ -40,13 +40,13 @@ function CommentItem({ comment, postId, onReplyAdded }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -5 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="group mt-6 first:mt-2"
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="group mt-4 first:mt-2"
     >
       <div className="flex gap-4">
         {/* Avatar */}
-        <div className="w-9 h-9 rounded-full bg-fuchsia-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+        <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 shadow-lg shadow-primary-500/20">
           {comment.author?.image ? (
             <img src={comment.author.image} alt="" className="w-full h-full rounded-full object-cover" />
           ) : (
@@ -57,21 +57,21 @@ function CommentItem({ comment, postId, onReplyAdded }) {
         {/* Comment Body */}
         <div className="flex-1 min-w-0">
           <div className="bg-transparent">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-sm font-bold text-gray-900 dark:text-gray-200">{comment.author?.name}</span>
-              <span className="text-[12px] text-gray-500 dark:text-[#6e7681]">
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="text-sm font-semibold text-white">{comment.author?.name}</span>
+              <span className="text-xs text-white/50">
                 {formatDate(comment.createdAt)}
               </span>
             </div>
-            <p className="text-[14px] leading-relaxed text-gray-700 dark:text-[#c9d1d9] whitespace-pre-wrap">{comment.content}</p>
+            <p className="text-sm leading-relaxed text-white/80 whitespace-pre-wrap">{comment.content}</p>
           </div>
           
           {/* Metadata actions */}
-          <div className="flex items-center gap-4 mt-2">
+          <div className="flex items-center gap-3 mt-1.5">
             {session && (
               <button
                 onClick={() => setShowReply(!showReply)}
-                className="text-[12px] text-gray-500 dark:text-[#6e7681] hover:text-blue-600 dark:hover:text-blue-500 font-medium transition-colors"
+                className="text-[10px] font-semibold text-white/40 hover:text-primary-500 transition-colors uppercase tracking-wider"
               >
                 Reply
               </button>
@@ -79,7 +79,7 @@ function CommentItem({ comment, postId, onReplyAdded }) {
             {comment.replies?.length > 0 && (
               <button
                 onClick={() => setShowReplies(!showReplies)}
-                className="flex items-center gap-1 text-[12px] text-blue-600 dark:text-blue-500 font-medium"
+                className="flex items-center gap-1 text-[10px] font-semibold text-primary-500 uppercase tracking-wider"
               >
                 {showReplies ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 {comment.replies.length} {comment.replies.length === 1 ? "reply" : "replies"}
@@ -95,18 +95,18 @@ function CommentItem({ comment, postId, onReplyAdded }) {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 onSubmit={handleReply}
-                className="mt-3 flex gap-2"
+                className="mt-2.5 flex gap-2 overflow-hidden"
               >
                 <input
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Write a reply..."
-                  className="flex-1 bg-white/50 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-lg px-4 py-2 text-sm text-gray-900 dark:text-gray-300 focus:outline-none focus:border-blue-500/50 transition-all"
+                  className="flex-1 h-9 bg-[#030712] border border-white/10 rounded-lg px-3 text-sm text-white/80 focus:outline-none focus:border-primary-500/50 transition-all font-medium"
                 />
                 <button
                   type="submit"
                   disabled={!replyText.trim() || submitting}
-                  className="px-4 py-2 rounded-lg bg-blue-600 dark:bg-[#1e40af] text-white dark:text-blue-100 disabled:opacity-50 hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-sm font-semibold shadow-sm"
+                  className="h-9 px-4 py-2 rounded-lg bg-primary-600 text-white disabled:opacity-50 hover:bg-primary-700 transition-colors text-xs font-bold"
                 >
                   Reply
                 </button>
@@ -121,19 +121,19 @@ function CommentItem({ comment, postId, onReplyAdded }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-4 pl-4 border-l-2 border-gray-100 dark:border-[#1e293b] space-y-5"
+                className="mt-3 pl-3 border-l-2 border-white/5 space-y-4"
               >
                 {comment.replies.map((reply) => (
                   <div key={reply._id} className="flex gap-3">
-                    <div className="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-teal-600/80 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
                       {reply.author?.name?.[0]?.toUpperCase()}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[13px] font-bold text-gray-900 dark:text-gray-200">{reply.author?.name}</span>
-                        <span className="text-[11px] text-gray-400 dark:text-[#6e7681]">{formatDate(reply.createdAt)}</span>
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-[13px] font-semibold text-white">{reply.author?.name}</span>
+                        <span className="text-[11px] text-white/40">{formatDate(reply.createdAt)}</span>
                       </div>
-                      <p className="text-[13px] leading-relaxed text-gray-600 dark:text-[#8b949e] whitespace-pre-wrap">{reply.content}</p>
+                      <p className="text-[13px] leading-relaxed text-white/70 whitespace-pre-wrap">{reply.content}</p>
                     </div>
                   </div>
                 ))}
@@ -203,62 +203,77 @@ export default function CommentSection({ postId }) {
   };
 
   return (
-    <div className="mt-8 space-y-6">
-      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-        Comments {comments.length > 0 && `(${comments.length})`}
+    <div className="space-y-4">
+      <h3 className="text-sm font-semibold leading-tight text-white/90 mb-4 flex items-center gap-2 px-1">
+        <MessageCircle className="w-4 h-4 text-primary-500" />
+        Comments {comments.length > 0 && <span className="text-white/40 font-medium">({comments.length})</span>}
       </h3>
 
       {/* New Comment */}
       {session ? (
-        <form onSubmit={handleSubmit} className="flex gap-4 items-start mb-8">
-          <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-            {session.user?.name?.[0]?.toUpperCase()}
+        <form onSubmit={handleSubmit} className="flex gap-3 items-start mb-8 px-1">
+          <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+            {session.user?.image ? (
+              <img src={session.user.image} alt="" className="w-full h-full rounded-full object-cover" />
+            ) : (
+              session.user?.name?.[0]?.toUpperCase()
+            )}
           </div>
-          <div className="flex-1 flex flex-col bg-white/40 dark:bg-[#030712]/40 backdrop-blur-xl border border-gray-200/60 dark:border-[#1e293b]/60 rounded-xl overflow-hidden focus-within:border-blue-600/50 dark:focus-within:border-[#1e40af]/80 focus-within:bg-white/60 dark:focus-within:bg-[#030712]/60 transition-all duration-300">
+          <div className="flex-1 flex flex-col bg-white/[0.02] border border-white/10 rounded-xl overflow-hidden focus-within:border-primary-500/30 transition-all duration-300">
             <textarea
               value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Write a comment... (supports Markdown)"
-              className="w-full bg-transparent min-h-[80px] px-4 py-3 text-[14px] text-gray-800 dark:text-gray-200 resize-none focus:outline-none placeholder:text-gray-400 dark:placeholder:text-[#6e7681]"
+              onChange={(e) => {
+                setNewComment(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${Math.min(e.target.scrollHeight, 144)}px`;
+              }}
+              rows={2}
+              placeholder="What are your thoughts?"
+              className="w-full bg-transparent min-h-[48px] max-h-[144px] px-3 py-2.5 text-sm text-white/80 resize-none focus:outline-none placeholder:text-white/20 overflow-y-auto"
             />
-            <div className="flex justify-end px-3 py-2 border-t border-gray-100 dark:border-[#1e293b]/60 bg-transparent">
+            <div className="flex justify-between items-center px-3 py-2 border-t border-white/5 bg-white/[0.01]">
+              <span className="text-[10px] text-white/20 font-bold uppercase tracking-wider">Markdown Supported</span>
               <button
                 type="submit"
                 disabled={!newComment.trim() || submitting}
-                className="flex items-center gap-2 px-5 py-1.5 rounded-lg bg-blue-600 dark:bg-[#1e40af] text-white dark:text-blue-100 disabled:opacity-50 hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-sm font-semibold shadow-sm"
+                className="flex items-center gap-1.5 h-7 px-3 rounded-lg bg-primary-600 text-white disabled:opacity-50 hover:bg-primary-700 transition-all text-xs font-bold"
               >
-                <Send className="w-3.5 h-3.5" />
+                {submitting ? (
+                  <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Send className="w-3 h-3" />
+                )}
                 Comment
               </button>
             </div>
           </div>
         </form>
       ) : (
-        <div className="border border-gray-100 dark:border-[#1e293b] rounded-xl p-6 text-center text-gray-400 dark:text-[#6e7681]">
-          <p className="text-sm">Please log in to leave a comment.</p>
+        <div className="bg-white/[0.01] border border-white/10 rounded-xl p-5 text-center text-white/40 mb-6">
+          <p className="text-xs font-medium">Please log in to leave a comment.</p>
         </div>
       )}
 
       {/* Comments List */}
       {loading ? (
-        <div className="space-y-6">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-[#1e293b] animate-pulse" />
-              <div className="flex-1 space-y-3">
-                <div className="h-4 w-1/4 bg-gray-100 dark:bg-[#1e293b] rounded animate-pulse" />
-                <div className="h-16 bg-gray-100/50 dark:bg-[#1e293b]/50 rounded animate-pulse" />
+        <div className="space-y-4">
+          {[1, 2].map((i) => (
+            <div key={i} className="flex gap-3 animate-pulse">
+              <div className="w-8 h-8 rounded-full bg-white/5" />
+              <div className="flex-1 space-y-2">
+                <div className="h-2 w-1/4 bg-white/5 rounded" />
+                <div className="h-8 bg-white/5 rounded-lg" />
               </div>
             </div>
           ))}
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-10 text-gray-300 dark:text-[#6e7681]">
-          <MessageCircle className="w-12 h-12 mx-auto mb-3 opacity-20" />
-          <p className="text-sm">No comments yet. Be the first!</p>
+        <div className="text-center py-6 text-white/20">
+          <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-10" />
+          <p className="text-xs">No comments yet. Be the first!</p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {comments.map((comment) => (
             <CommentItem
               key={comment._id}

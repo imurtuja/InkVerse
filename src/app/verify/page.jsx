@@ -151,7 +151,7 @@ function VerifyContent() {
           <button
             onClick={() => handleVerify(otp.join(""))}
             disabled={loading || otp.some(d => d === "")}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-base font-bold text-white bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 disabled:opacity-50 shadow-lg shadow-primary-500/30 transition-all active:scale-[0.98] mb-6"
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-base font-bold text-white bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 disabled:opacity-50 shadow-lg shadow-primary-500/30 transition-all mb-6 active:opacity-90"
           >
             {loading ? (
               <RefreshCw className="w-5 h-5 animate-spin" />

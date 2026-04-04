@@ -8,6 +8,32 @@ import Notification from "@/models/Notification";
 import PendingUser from "@/models/PendingUser";
 import { requireAdmin } from "@/lib/require-admin";
 
+export async function GET(request, { params }) {
+  const { ok, status } = await requireAdmin();
+  if (!ok) {
+    return NextResponse.json({ error: status === 401 ? "Unauthorized" : "Forbidden" }, { status });
+  }
+
+  try {
+    const { id } = await params;
+    if (!mongoose.isValidObjectId(id)) {
+      return NextResponse.json({ error: "Invalid user ID format" }, { status: 400 });
+    }
+
+    await connectDB();
+    const user = await User.findById(id).select("name username email image bio role provider createdAt");
+    
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ user });
+  } catch (e) {
+    console.error(`[Admin GET User Error]: ${e.message}`, e);
+    return NextResponse.json({ error: "Internal server error while fetching user" }, { status: 500 });
+  }
+}
+
 export async function PATCH(request, { params }) {
   const { ok, status } = await requireAdmin();
   if (!ok) {
@@ -17,10 +43,14 @@ export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
     if (!mongoose.isValidObjectId(id)) {
-      return NextResponse.json({ error: "Invalid user id" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid user ID format" }, { status: 400 });
     }
 
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
+    if (!body) {
+      return NextResponse.json({ error: "Empty or invalid request body" }, { status: 400 });
+    }
+
     const { name, bio, image, username } = body;
 
     await connectDB();
@@ -37,16 +67,19 @@ export async function PATCH(request, { params }) {
       }
       user.name = n;
     }
+    
     if (bio !== undefined) {
       user.bio = String(bio).slice(0, 300);
     }
+    
     if (image !== undefined) {
       user.image = String(image).slice(0, 2000);
     }
+    
     if (username !== undefined) {
       const u = String(username).trim().toLowerCase();
       if (!/^[a-zA-Z0-9_]+$/.test(u) || u.length < 3 || u.length > 30) {
-        return NextResponse.json({ error: "Invalid username" }, { status: 400 });
+        return NextResponse.json({ error: "Invalid username format" }, { status: 400 });
       }
       const clash = await User.findOne({ username: u, _id: { $ne: id } });
       if (clash) {
@@ -71,8 +104,8 @@ export async function PATCH(request, { params }) {
       },
     });
   } catch (e) {
-    console.error("Admin patch user error:", e);
-    return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
+    console.error(`[Admin PATCH User Error]: ${e.message}`, e);
+    return NextResponse.json({ error: "Internal server error while updating user" }, { status: 500 });
   }
 }
 
@@ -85,11 +118,11 @@ export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
     if (!mongoose.isValidObjectId(id)) {
-      return NextResponse.json({ error: "Invalid user id" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid user ID format" }, { status: 400 });
     }
 
     if (id === session.user.id) {
-      return NextResponse.json({ error: "Cannot delete your own account from the panel" }, { status: 400 });
+      return NextResponse.json({ error: "Cannot delete your own admin account" }, { status: 400 });
     }
 
     await connectDB();
@@ -101,7 +134,7 @@ export async function DELETE(request, { params }) {
 
     if (target.role === "admin") {
       return NextResponse.json(
-        { error: "Admin accounts cannot be removed from the app. Manage admin users only in the database." },
+        { error: "Admin accounts cannot be removed from the panel. Manage them via database directly." },
         { status: 403 }
       );
     }
@@ -119,15 +152,18 @@ export async function DELETE(request, { params }) {
     await Notification.deleteMany({
       $or: [{ recipient: userId }, { sender: userId }],
     });
+    
     await User.updateMany({}, { $pull: { followers: userId, following: userId } });
+    
     if (target.email) {
       await PendingUser.deleteMany({ email: target.email });
     }
+    
     await User.findByIdAndDelete(userId);
 
-    return NextResponse.json({ message: "User and related content removed" });
+    return NextResponse.json({ success: true, message: "User and all related content removed permanently" });
   } catch (e) {
-    console.error("Admin delete user error:", e);
-    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
+    console.error(`[Admin DELETE User Error]: ${e.message}`, e);
+    return NextResponse.json({ error: "Internal server error while removing user" }, { status: 500 });
   }
 }

@@ -54,7 +54,7 @@ export default function LandingPage() {
             animate="visible"
             custom={1}
             variants={fadeUp}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.1] tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight"
           >
             Where Code Meets{" "}
             <span className="bg-gradient-to-r from-primary-400 via-purple-400 to-accent-400 bg-clip-text text-transparent">
@@ -67,7 +67,7 @@ export default function LandingPage() {
             animate="visible"
             custom={2}
             variants={fadeUp}
-            className="text-base sm:text-lg text-[hsl(var(--muted-foreground))] max-w-xl mx-auto mb-10 leading-relaxed"
+            className="text-sm sm:text-base text-[hsl(var(--muted-foreground))] max-w-xl mx-auto mb-8 leading-normal"
           >
             Share code snippets with syntax highlighting, poetry with preserved formatting,
             quotes that inspire all in one beautiful, unified space.
@@ -82,14 +82,14 @@ export default function LandingPage() {
           >
             <Link
               href="/signup"
-              className="px-8 py-4 rounded-2xl bg-white dark:bg-white text-black font-bold hover:bg-white/90 transition-all shadow-xl shadow-white/10 flex items-center gap-2 group"
+              className="px-6 py-3 rounded-xl bg-white dark:bg-white text-black font-medium text-sm hover:bg-white/90 transition-all shadow-xl shadow-white/10 flex items-center gap-2 group"
             >
               Get Started for Free
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/feed"
-              className="px-8 py-4 rounded-2xl bg-transparent border border-[hsl(var(--border))] font-bold hover:bg-white/5 transition-all"
+              className="px-6 py-3 rounded-xl bg-transparent border border-[hsl(var(--border))] font-medium text-sm hover:bg-white/5 transition-all"
             >
               Explore Feed
             </Link>
@@ -98,9 +98,9 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Grid */}
-      <section className="py-24 px-4 bg-black/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="py-16 px-4 bg-black/20">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((feature, i) => (
               <motion.div
                 key={i}
@@ -109,12 +109,12 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 custom={i}
                 variants={fadeUp}
-                className="p-8 rounded-3xl glass-card border border-white/5 hover:border-white/10 transition-all group"
+                className="p-5 rounded-2xl glass-card border border-white/5 hover:border-white/10 transition-all group active:opacity-90"
               >
-                <div className={`w-12 h-12 rounded-2xl ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <feature.icon className="w-6 h-6" />
+                <div className={`w-10 h-10 rounded-xl ${feature.color} flex items-center justify-center mb-4 transition-colors`}>
+                  <feature.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <h3 className="text-lg font-bold leading-tight mb-2">{feature.title}</h3>
                 <p className="text-[hsl(var(--muted-foreground))] text-sm leading-relaxed">
                   {feature.desc}
                 </p>
@@ -125,11 +125,11 @@ export default function LandingPage() {
       </section>
 
       {/* Footer Branding */}
-      <footer className="py-12 px-4 border-t border-white/5">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <Feather className="w-8 h-8 text-primary-600 dark:text-primary-400 group-hover:-translate-y-0.5 transition-all duration-300" />
-            <span className="logo-glow logo-shimmer text-xl font-black bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent tracking-tight transition-all duration-300">
+      <footer className="py-8 px-4 border-t border-white/5">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-1.5 group cursor-pointer active:opacity-70 transition-opacity">
+            <Feather className="w-5 h-5 text-primary-600 dark:text-primary-400 transition-all duration-300" />
+            <span className="logo-glow logo-shimmer text-lg font-bold bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent tracking-tight transition-all duration-300">
               InkVerse
             </span>
           </div>

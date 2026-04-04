@@ -1,17 +1,12 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendOTP = async (email, otp) => {
-  const mailOptions = {
-    from: `"InkVerse Verification" <${process.env.EMAIL_USER}>`,
+  const msg = {
     to: email,
+    from: `InkVerse Verification <verify@inkverse.murtuja.in>`,
+    replyTo: "inkverse.murtuja@gmail.com",
     subject: `🔐 Your InkVerse Verification Code: ${otp}`,
     html: `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb; border-radius: 16px;">
@@ -46,19 +41,19 @@ export const sendOTP = async (email, otp) => {
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("OTP Email sent: %s", info.messageId);
+    await sgMail.send(msg);
+    console.log("OTP Email sent");
     return true;
   } catch (error) {
-    console.error("Error sending OTP email:", error);
+    console.error("Error sending OTP email:", error.response?.body || error);
     throw new Error("Failed to send verification email");
   }
 };
 
 export const sendWelcomeEmail = async (email, name) => {
-  const mailOptions = {
-    from: `"InkVerse" <${process.env.EMAIL_USER}>`,
+  const msg = {
     to: email,
+    from: `InkVerse <no-reply@inkverse.murtuja.in>`,
     subject: `🚀 Welcome to InkVerse, ${name}!`,
     html: `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb; border-radius: 16px;">
@@ -100,11 +95,11 @@ export const sendWelcomeEmail = async (email, name) => {
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Welcome Email sent: %s", info.messageId);
+    await sgMail.send(msg);
+    console.log("Welcome Email sent");
     return true;
   } catch (error) {
-    console.error("Error sending welcome email:", error);
+    console.error("Error sending welcome email:", error.response?.body || error);
     return false;
   }
 };

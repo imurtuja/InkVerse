@@ -11,8 +11,6 @@ import remarkGfm from "remark-gfm";
 import {
   ChevronLeft,
   Send,
-  Eye,
-  PenTool,
   Code2,
   Feather,
   Quote,
@@ -20,7 +18,15 @@ import {
   StickyNote,
   Globe,
   Book,
-  ChevronDown
+  ChevronDown,
+  Bold,
+  Italic,
+  Link2,
+  List,
+  Code,
+  Type,
+  Eye,
+  Edit3
 } from "lucide-react";
 import { cn, POST_CATEGORIES } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -38,8 +44,11 @@ const categoryIcons = { code: Code2, poetry: Feather, quote: Quote, shayri: Book
 export default function PostEditor({ initialData, isEdit = false }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [isPreview, setIsPreview] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const textareaRef = useRef(null);
+  const [tagInput, setTagInput] = useState("");
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(postSchema),
@@ -53,9 +62,10 @@ export default function PostEditor({ initialData, isEdit = false }) {
   });
 
   const content = watch("content");
+  const title = watch("title");
   const category = watch("category");
+  const tags = watch("tags") ? watch("tags").split(",").map(t => t.trim()).filter(Boolean) : [];
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -66,16 +76,59 @@ export default function PostEditor({ initialData, isEdit = false }) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  const insertMarkdown = (prefix, suffix = "") => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selectedText = text.substring(start, end);
+    const before = text.substring(0, start);
+    const after = text.substring(end);
+
+    const newContent = `${before}${prefix}${selectedText}${suffix}${after}`;
+    setValue("content", newContent);
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + prefix.length,
+        end + prefix.length
+      );
+    }, 0);
+  };
+
+  const addTag = (e) => {
+    if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
+      e.preventDefault();
+      const newTag = tagInput.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (newTag && !tags.includes(newTag)) {
+        const updatedTags = [...tags, newTag].join(", ");
+        setValue("tags", updatedTags);
+      }
+      setTagInput("");
+    } else if (e.key === "Backspace" && !tagInput && tags.length > 0) {
+      const updatedTags = tags.slice(0, -1).join(", ");
+      setValue("tags", updatedTags);
+    }
+  };
+
+  const removeTag = (tagToRemove) => {
+    const updatedTags = tags.filter(t => t !== tagToRemove).join(", ");
+    setValue("tags", updatedTags);
+  };
+
   const onSubmit = async (data) => {
     setSubmitting(true);
     try {
-      const tags = data.tags ? data.tags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean) : [];
+      const tagsArray = data.tags ? data.tags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean) : [];
       const payload = {
         title: data.title,
         content: data.content,
         category: data.category,
         language: data.category === "code" ? data.lang : "",
-        tags
+        tags: tagsArray
       };
 
       const url = isEdit ? `/api/posts/${initialData._id}` : "/api/posts";
@@ -102,131 +155,213 @@ export default function PostEditor({ initialData, isEdit = false }) {
   const selectedCategoryObj = POST_CATEGORIES.find((c) => c.value === category) || POST_CATEGORIES[6];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 min-h-screen flex flex-col">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 flex-1 flex flex-col">
-        {/* Header Options */}
-        <div className="flex items-center justify-between mb-4">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-lg font-bold hover:text-gray-300 transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            {isEdit ? "Edit Post" : "Create Post"}
-          </button>
-          
-          <button
-            type="submit"
-            disabled={submitting}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white bg-teal-600 hover:bg-teal-500 disabled:opacity-50 transition-colors"
-          >
-            <Send className="w-4 h-4" />
-            {submitting ? "Publishing..." : "Publish"}
-          </button>
-        </div>
-
-        {/* Row 1: Title & Category */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <input
-            {...register("title")}
-            placeholder="Post title (optional)"
-            className="flex-1 bg-white/70 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
-          />
-          
-          <div className="relative sm:w-64" ref={dropdownRef}>
+    <div className="max-w-3xl mx-auto px-3 py-4 md:py-8 min-h-screen">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        
+        {/* Top Header - Surface Floating UI */}
+        <div className="flex items-center justify-between sticky top-14 z-30 bg-[#030712]/80 backdrop-blur-xl py-3 -mx-3 px-3 border-b border-white/5">
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-              className="w-full flex items-center justify-between bg-white/70 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-teal-500/50 transition-colors"
+              onClick={() => router.back()}
+              className="p-2 rounded-xl hover:bg-white/5 text-gray-400 transition-colors"
             >
-              <span>{selectedCategoryObj.label}</span>
-              <ChevronDown className="w-4 h-4 text-gray-400" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
             
-            {showCategoryDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl overflow-hidden shadow-xl z-20">
-                {POST_CATEGORIES.map((cat) => (
-                  <button
-                    key={cat.value}
-                    type="button"
-                    onClick={() => {
-                      setValue("category", cat.value);
-                      setShowCategoryDropdown(false);
-                    }}
-                    className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-[#1e293b] transition-colors"
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Row 2: Tags & Language */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <input
-            {...register("tags")}
-            placeholder="Tags (comma separated): javascript, motivation, love"
-            className="flex-1 bg-white/70 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
-          />
-          {category === "code" && (
-            <input
-              {...register("lang")}
-              placeholder="Language: javascript, python, bash..."
-              className="flex-1 sm:flex-none sm:w-1/2 bg-white/70 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
-            />
-          )}
-        </div>
-
-        {/* Editor & Preview Split View */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-[500px] mt-4">
-          {/* Editor Column */}
-          <div className="flex flex-col h-full">
-            <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-widest pl-1">
-              <PenTool className="w-3.5 h-3.5" />
-              Markdown Editor
-            </div>
-            <div className="relative flex-1 bg-white/70 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl overflow-hidden focus-within:border-teal-500/50 transition-colors">
-              <textarea
-                id="post-content"
-                {...register("content")}
-                placeholder={
-                  category === "code"
-                    ? "Write your code snippet...\n\n```javascript\nconsole.log(\"Hello InkVerse!\")\n```"
-                    : category === "poetry" || category === "song" || category === "shayri"
-                    ? "Write your poetry...\n\n*In the garden of words,*\n*each verse a blooming flower,*\n*silence speaks louder*\n*than any spoken hour.*"
-                    : "Write your content here...\n\nSupports **bold**, *italic*, `code`, > quotes, and more!"
-                }
-                className="w-full h-full p-5 bg-transparent resize-none focus:outline-none text-[13px] font-mono leading-relaxed text-gray-900 dark:text-gray-300 placeholder:text-gray-400"
-              />
-              {errors.content && (
-                <p className="absolute bottom-3 left-4 text-xs text-red-500 bg-white dark:bg-[#0b101a] px-2">{errors.content.message}</p>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 text-xs font-bold tracking-tight hover:bg-white/5 transition-colors text-gray-300"
+              >
+                {(() => {
+                  const CategoryIcon = categoryIcons[category] || categoryIcons.general;
+                  return <CategoryIcon className="w-4 h-4 text-primary-500" />;
+                })()}
+                <span>{selectedCategoryObj.label}</span>
+                <ChevronDown className="w-3.5 h-3.5 opacity-50" />
+              </button>
+              
+              {showCategoryDropdown && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-[#030712]/95 border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 backdrop-blur-2xl">
+                  <div className="p-2 space-y-1">
+                    {POST_CATEGORIES.map((cat) => {
+                      const CatIcon = categoryIcons[cat.value] || categoryIcons.general;
+                      return (
+                        <button
+                          key={cat.value}
+                          type="button"
+                          onClick={() => {
+                            setValue("category", cat.value);
+                            setShowCategoryDropdown(false);
+                          }}
+                          className={cn(
+                            "w-full text-left px-3 py-2 text-xs font-medium rounded-xl transition-colors flex items-center gap-2",
+                            category === cat.value ? "bg-primary-600 text-white" : "text-gray-400 hover:bg-white/5"
+                          )}
+                        >
+                          <CatIcon className="w-4 h-4" />
+                          {cat.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
             </div>
           </div>
 
-          {/* Preview Column */}
-          <div className="flex flex-col h-full hidden lg:flex">
-            <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-widest pl-1">
-              <Eye className="w-3.5 h-3.5" />
-              Preview
+          <div className="flex items-center gap-2">
+            <div className="flex items-center p-1 bg-white/5 border border-white/10 rounded-xl mr-2">
+              <button
+                type="button"
+                onClick={() => setIsPreview(false)}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
+                  !isPreview ? "bg-white/10 text-white shadow-sm" : "text-gray-500 hover:text-gray-300"
+                )}
+              >
+                <Edit3 className="w-3 h-3" /> Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsPreview(true)}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
+                  isPreview ? "bg-white/10 text-white shadow-sm" : "text-gray-500 hover:text-gray-300"
+                )}
+              >
+                <Eye className="w-3 h-3" /> Preview
+              </button>
             </div>
-            <div className="flex-1 bg-white/70 dark:bg-[#0b101a] border border-gray-200 dark:border-[#1e293b] rounded-xl p-5 overflow-auto">
 
-              <div className={cn("prose-content", `post-${category}`)}>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-xl shadow-primary-500/20 disabled:opacity-50 transition-all h-10"
+            >
+              {submitting ? (
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
+              <span>{isEdit ? "Update" : "Publish"}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Main Editor Surface */}
+        <div className="bg-white/[0.02] border border-white/10 shadow-2xl shadow-black/40 rounded-2xl overflow-hidden transition-all duration-300">
+          
+          {!isPreview ? (
+            <div className="flex flex-col h-full min-h-[500px]">
+              {/* Integrated Toolbar */}
+              <div className="flex items-center gap-1 p-1 border-b border-white/5 bg-white/[0.02] overflow-x-auto whitespace-nowrap scrollbar-hide">
+                {[
+                  { icon: Bold, action: () => insertMarkdown("**", "**"), label: "Bold" },
+                  { icon: Italic, action: () => insertMarkdown("*", "*"), label: "Italic" },
+                  { icon: Code, action: () => insertMarkdown("`", "`"), label: "Code" },
+                  { icon: Quote, action: () => insertMarkdown("> "), label: "Quote" },
+                  { icon: List, action: () => insertMarkdown("- "), label: "List" },
+                  { icon: Link2, action: () => insertMarkdown("[", "](url)"), label: "Link" },
+                  { icon: Type, action: () => insertMarkdown("### "), label: "Heading" },
+                ].map((tool, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={tool.action}
+                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl text-white/40 hover:bg-white/5 hover:text-white transition-all"
+                    title={tool.label}
+                  >
+                    <tool.icon className="w-4 h-4" />
+                  </button>
+                ))}
+              </div>
+
+              {/* Writing Surface */}
+              <div className="p-5 md:p-10 space-y-5">
+                <input
+                  {...register("title")}
+                  placeholder="New zikr title here..."
+                  autoFocus
+                  className="w-full bg-transparent border-none text-2xl md:text-3xl font-semibold focus:outline-none placeholder:text-white/10 text-white p-0 leading-tight tracking-tight selection:bg-primary-500/20"
+                />
+
+                <div className="flex flex-wrap gap-2 items-center">
+                  {tags.map((tag) => (
+                    <span key={tag} className="flex items-center gap-1.5 px-2 py-0.5 bg-primary-500/10 border border-primary-500/20 rounded-lg text-[10px] font-bold text-primary-400 group">
+                      #{tag}
+                      <button type="button" onClick={() => removeTag(tag)} className="hover:text-red-500 transition-colors opacity-60 group-hover:opacity-100">×</button>
+                    </span>
+                  ))}
+                  <input
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={addTag}
+                    placeholder={tags.length === 0 ? "Add tags..." : "Add more tags"}
+                    className="flex-1 bg-transparent border-none text-[11px] font-semibold focus:outline-none min-w-[150px] placeholder:text-white/10 text-primary-500/60"
+                  />
+                </div>
+
+                {category === "code" && (
+                  <input
+                    {...register("lang")}
+                    placeholder="Programming language (e.g. javascript)..."
+                    className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2 text-[11px] font-bold text-primary-500 focus:outline-none tracking-widest placeholder:normal-case placeholder:text-gray-700 mt-2"
+                  />
+                )}
+
+                <div className="relative min-h-[400px] pt-1">
+                  <textarea
+                    {...register("content")}
+                    ref={(e) => {
+                      register("content").ref(e);
+                      textareaRef.current = e;
+                    }}
+                    placeholder="Tell your story... Markdown is fully supported."
+                    className="w-full h-full bg-transparent resize-none focus:outline-none text-sm leading-relaxed text-white/80 placeholder:text-white/10 min-h-[500px] py-1 selection:bg-primary-500/20"
+                  />
+                  {errors.content && (
+                    <p className="text-[11px] font-bold text-red-500 mt-2">× {errors.content.message}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="p-5 md:p-10 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              {/* Preview Mode Rendering - EXACT MATCH WITH POST PAGE */}
+              <div className="space-y-3">
+                <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight tracking-tight">
+                  {title || "Untitled Zikr"}
+                </h1>
+                
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-1 pb-1">
+                    {tags.map((tag) => (
+                      <span key={tag} className="text-[11px] font-medium text-primary-500/80">#{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className={cn(
+                "text-sm text-white/90 leading-relaxed prose prose-sm prose-invert max-w-none break-words",
+                "prose-pre:bg-black/20 prose-pre:border prose-pre:border-white/5 prose-pre:rounded-xl prose-a:text-primary-500 prose-blockquote:border-l-primary-500 prose-blockquote:bg-white/5 prose-blockquote:py-1 prose-blockquote:px-3",
+                "prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-tight",
+                `post-${category}`
+              )}>
                 {content ? (
                   <ReactMarkdown rehypePlugins={[rehypeHighlight]} remarkPlugins={[remarkGfm]}>
                     {content}
                   </ReactMarkdown>
                 ) : (
-                  <p className="text-gray-500 italic text-[13px] font-mono">Your preview will appear here...</p>
+                  <p className="text-gray-700 italic text-[13px] tracking-wide">No content to preview yet. Start writing something beautiful.</p>
                 )}
               </div>
             </div>
-          </div>
+          )}
         </div>
-        <p className="text-xs text-gray-500 mt-2 px-1">Tip: Use ```language for code blocks, **bold**, *italic*, &gt; for quotes</p>
       </form>
     </div>
   );

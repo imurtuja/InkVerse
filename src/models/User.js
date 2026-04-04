@@ -82,18 +82,21 @@ function stripRoleFromMongoUpdate(update) {
 }
 
 UserSchema.pre("save", async function () {
-  if (this.isNew) {
-    this.role = "user";
-    return;
+  try {
+    if (this.isNew) {
+      this.role = "user";
+      return;
+    }
+    if (!this.isModified("role")) return;
+    const prev = await this.constructor.findById(this._id).select("role").lean();
+    if (prev) this.role = prev.role;
+  } catch (err) {
+    throw err;
   }
-  if (!this.isModified("role")) return;
-  const prev = await this.constructor.findById(this._id).select("role").lean();
-  if (prev) this.role = prev.role;
 });
 
-UserSchema.pre(["findOneAndUpdate", "updateOne", "updateMany"], function (next) {
+UserSchema.pre(["findOneAndUpdate", "updateOne", "updateMany"], function () {
   stripRoleFromMongoUpdate(this.getUpdate());
-  next();
 });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

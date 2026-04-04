@@ -54,7 +54,6 @@ export default function FeedPage() {
     fetchPosts(1, category, true);
   }, [category, fetchPosts]);
 
-  // Infinite scroll
   const lastPostRef = useCallback(
     (node) => {
       if (loadingMore) return;
@@ -76,75 +75,78 @@ export default function FeedPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 md:py-10">
+    <div className="max-w-3xl mx-auto px-3 md:px-0 py-4 mb-4">
       {/* Header */}
-      <div className="mb-6 px-1 flex items-center gap-2">
-        <Activity className="w-6 h-6 text-primary-500" />
-        <h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-gray-100">Feed</h1>
+      <div className="mb-4 px-1 flex items-center gap-2">
+        <Activity className="w-5 h-5 text-primary-500" />
+        <h1 className="text-xl font-semibold leading-tight text-white tracking-tight">Feed</h1>
       </div>
 
-      {/* Category Filter - Fixed for Desktop Width Alignment */}
-      <div className="flex gap-2 md:gap-0 md:justify-between overflow-x-auto md:overflow-visible pb-6 mb-2 scrollbar-hide">
-        {feedCategories.map((cat) => {
-          const Icon = cat.icon;
-          const isActive = category === cat.value;
-          return (
-            <button
-              key={cat.value}
-              onClick={() => setCategory(cat.value)}
-              className={cn(
-                "flex-shrink-0 flex items-center justify-center gap-1.5 px-3 md:px-2.5 py-1.5 rounded-full text-[12px] font-bold transition-all duration-200 border",
-                isActive
-                  ? "bg-blue-600 dark:bg-[#1e40af] text-white border-blue-600 dark:border-[#1e40af] shadow-md shadow-blue-500/20"
-                  : "bg-white/50 dark:bg-transparent text-gray-600 dark:text-gray-400 border-gray-200 dark:border-[#1e293b] hover:bg-gray-100 dark:hover:bg-[#1e293b]/50 hover:text-gray-900 dark:hover:text-gray-200"
-              )}
-            >
-              {Icon && <Icon className="w-3.5 h-3.5" />}
-              {cat.label}
-            </button>
-          );
-        })}
+      {/* Category Filter - Sticky with unified surface blur */}
+      <div className="sticky top-14 z-20 -mx-3 px-3 py-2.5 bg-[#030712]/60 backdrop-blur-xl border-b border-white/[0.05] mb-5">
+        <div className="flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide pb-0.5">
+          {feedCategories.map((cat) => {
+            const Icon = cat.icon;
+            const isActive = category === cat.value;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => setCategory(cat.value)}
+                className={cn(
+                  "flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border uppercase tracking-wider",
+                  isActive
+                    ? "bg-primary-600 text-white border-primary-600 shadow-lg shadow-primary-500/20"
+                    : "bg-white/[0.02] text-white/40 border-white/5 hover:bg-white/5 hover:text-white"
+                )}
+              >
+                {Icon && <Icon className="w-3.5 h-3.5" />}
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Posts */}
       {loading ? (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white/40 dark:bg-[#030712]/10 backdrop-blur-md border border-gray-100 dark:border-[#1e293b]/30 rounded-2xl p-6 md:p-8 space-y-4">
+            <div key={i} className="bg-white/[0.02] border border-white/10 rounded-2xl p-5 space-y-4 animate-pulse shadow-xl shadow-black/20">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-[#1e293b] animate-pulse" />
+                <div className="w-9 h-9 rounded-full bg-white/5" />
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 w-1/3 bg-gray-200 dark:bg-[#1e293b] rounded animate-pulse" />
-                  <div className="h-3 w-1/4 bg-gray-200 dark:bg-[#1e293b] rounded animate-pulse" />
+                  <div className="h-3 w-1/3 bg-white/5 rounded" />
+                  <div className="h-2 w-1/4 bg-white/5 rounded" />
                 </div>
               </div>
-              <div className="h-24 bg-gray-100/50 dark:bg-[#1e293b]/50 rounded animate-pulse" />
+              <div className="space-y-2.5">
+                <div className="h-4 w-full bg-white/5 rounded" />
+                <div className="h-4 w-5/6 bg-white/5 rounded" />
+              </div>
             </div>
           ))}
         </div>
       ) : posts.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-20"
-        >
-          <Sparkles className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-gray-600 dark:text-gray-400 mb-1">No posts right now</h3>
-          <p className="text-sm text-gray-500">Be the first to share something!</p>
-        </motion.div>
+        <div className="text-center py-24 animate-in fade-in duration-700">
+          <Sparkles className="w-10 h-10 text-gray-800 mx-auto mb-4" />
+          <h3 className="text-base font-bold text-gray-500 mb-1.5">No posts found</h3>
+          <p className="text-sm text-gray-700">Be the first to ignite the verse!</p>
+        </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {posts.map((post, index) => (
             <div
               key={post._id}
               ref={index === posts.length - 1 ? lastPostRef : null}
+              className="animate-in fade-in slide-in-from-bottom-3 duration-500 fill-mode-both"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               <PostCard post={post} onDelete={handleDelete} />
             </div>
           ))}
           {loadingMore && (
-            <div className="flex justify-center py-6">
-              <div className="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin" />
+            <div className="flex justify-center py-10">
+              <div className="w-7 h-7 border-2 border-white/10 border-t-primary-500 rounded-full animate-spin" />
             </div>
           )}
         </div>

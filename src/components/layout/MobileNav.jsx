@@ -49,9 +49,9 @@ export default function MobileNav() {
                 />
               )}
               <div className="relative z-10">
-                <Icon 
-                  strokeWidth={isActive ? 2.5 : 2} 
-                  className={cn("w-[20px] h-[20px] transition-colors duration-300", isActive ? "text-white dark:text-black" : "")} 
+                <Icon
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={cn("w-[20px] h-[20px] transition-colors duration-300", isActive ? "text-white dark:text-black" : "")}
                 />
                 {link.badge > 0 && (
                   <span className="absolute -top-1 -right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-[#111111] shadow-sm z-20">
@@ -60,7 +60,7 @@ export default function MobileNav() {
                 )}
               </div>
               {isActive && (
-                <motion.span 
+                <motion.span
                   initial={{ opacity: 0, width: 0 }}
                   animate={{ opacity: 1, width: "auto" }}
                   exit={{ opacity: 0, width: 0 }}

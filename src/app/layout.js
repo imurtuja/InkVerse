@@ -56,7 +56,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <Navbar />
-            <main className="min-h-screen pt-16 pb-20 md:pb-0">
+            <main className="min-h-screen pt-14 pb-20 md:pb-0">
               {children}
             </main>
             <MobileNav />

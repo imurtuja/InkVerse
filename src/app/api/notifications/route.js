@@ -12,17 +12,18 @@ export async function GET(request) {
 
     await connectDB();
 
-    const notifications = await Notification.find({ recipient: session.user.id })
-      .populate("sender", "name username image")
-      .populate("post", "content")
-      .sort({ createdAt: -1 })
-      .limit(50)
-      .lean();
-
-    const unreadCount = await Notification.countDocuments({
-      recipient: session.user.id,
-      read: false,
-    });
+    const [notifications, unreadCount] = await Promise.all([
+      Notification.find({ recipient: session.user.id })
+        .populate("sender", "name username image")
+        .populate("post", "content")
+        .sort({ createdAt: -1 })
+        .limit(50)
+        .lean(),
+      Notification.countDocuments({
+        recipient: session.user.id,
+        read: false,
+      })
+    ]);
 
     return NextResponse.json({ notifications, unreadCount });
   } catch (error) {
