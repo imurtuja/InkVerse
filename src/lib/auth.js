@@ -52,6 +52,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           image: user.image,
           username: user.username,
           role: user.role,
+          isBanned: user.isBanned,
+          banReason: user.banReason,
+          banExpiresAt: user.banExpiresAt,
         };
       },
     }),
@@ -95,6 +98,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.username = user.username;
         token.role = user.role;
         token.image = user.image;
+        token.isBanned = user.isBanned;
+        token.banReason = user.banReason;
+        token.banExpiresAt = user.banExpiresAt;
         await connectDB();
         const dbUser = await User.findOne({ email: user.email });
         if (dbUser) {
@@ -102,6 +108,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.username = dbUser.username;
           token.role = dbUser.role;
           token.image = dbUser.image;
+          token.isBanned = dbUser.isBanned;
+          token.banReason = dbUser.banReason;
+          token.banExpiresAt = dbUser.banExpiresAt;
         }
       }
       return token;
@@ -112,6 +121,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.username = token.username;
         session.user.role = token.role;
         session.user.image = token.image;
+        session.user.isBanned = token.isBanned;
+        session.user.banReason = token.banReason;
+        session.user.banExpiresAt = token.banExpiresAt;
       }
       return session;
     },

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Bell, User, MessageSquare, Heart, Bookmark, ArrowRight, UserPlus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import useStore from "@/store/useStore";
+import UserAvatar from "@/components/ui/UserAvatar";
 import { cn } from "@/lib/utils";
 
 const iconMap = {
@@ -102,20 +103,16 @@ export default function NotificationsDropdown({ isOpen, onClose }) {
                     !notif.read && "bg-primary-500/[0.02]"
                   )}
                 >
-                  <div className="relative flex-shrink-0">
-                    <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden">
-                      {notif.sender?.image ? (
-                        <img src={notif.sender.image} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center font-bold text-xs">
-                          {notif.sender?.name?.[0]}
-                        </div>
-                      )}
+                    <div className="relative flex-shrink-0">
+                      <UserAvatar
+                        src={notif.sender?.image}
+                        name={notif.sender?.name}
+                        size="sm"
+                      />
+                      <div className={cn("absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full border-2 border-white dark:border-[#030712] flex items-center justify-center", config.bg)}>
+                        <Icon className={cn("w-2.5 h-2.5", config.color)} />
+                      </div>
                     </div>
-                    <div className={cn("absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full border-2 border-white dark:border-[#030712] flex items-center justify-center", config.bg)}>
-                      <Icon className={cn("w-2.5 h-2.5", config.color)} />
-                    </div>
-                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[13px] leading-snug">
                       <span className="font-bold">{notif.sender?.name || "Someone"}</span>{" "}

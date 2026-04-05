@@ -48,6 +48,15 @@ const PostSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    status: {
+      type: String,
+      enum: ["active", "hidden", "flagged"],
+      default: "active",
+    },
+    autoFlagged: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

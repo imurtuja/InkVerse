@@ -8,6 +8,7 @@ import { z } from "zod";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
+import Button from "@/components/ui/Button";
 import {
   ChevronLeft,
   Send,
@@ -155,16 +156,16 @@ export default function PostEditor({ initialData, isEdit = false }) {
   const selectedCategoryObj = POST_CATEGORIES.find((c) => c.value === category) || POST_CATEGORIES[6];
 
   return (
-    <div className="max-w-3xl mx-auto px-3 py-4 md:py-8 min-h-screen">
+    <div className="min-h-screen">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         
         {/* Top Header - Surface Floating UI */}
-        <div className="flex items-center justify-between sticky top-14 z-30 bg-[#030712]/80 backdrop-blur-xl py-3 -mx-3 px-3 border-b border-white/5">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between sticky top-14 z-30 bg-white/80 dark:bg-[#030712]/80 backdrop-blur-xl py-3 -mx-3 px-3 border-b border-gray-200/50 dark:border-white/5">
+          <div className="flex items-center gap-0 sm:gap-3">
             <button
               type="button"
               onClick={() => router.back()}
-              className="p-2 rounded-xl hover:bg-white/5 text-gray-400 transition-colors"
+              className="hidden sm:flex p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 text-gray-400 transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -173,7 +174,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
               <button
                 type="button"
                 onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 text-xs font-bold tracking-tight hover:bg-white/5 transition-colors text-gray-300"
+                className="flex items-center justify-center gap-2 px-4 h-10 rounded-xl border border-gray-200 dark:border-white/10 text-[13px] font-bold tracking-tight hover:bg-gray-100 dark:hover:bg-white/5 transition-all text-gray-700 dark:text-gray-300 active:scale-95"
               >
                 {(() => {
                   const CategoryIcon = categoryIcons[category] || categoryIcons.general;
@@ -184,7 +185,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
               </button>
               
               {showCategoryDropdown && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-[#030712]/95 border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 backdrop-blur-2xl">
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-[#030712]/95 border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-xl dark:shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 backdrop-blur-xl">
                   <div className="p-2 space-y-1">
                     {POST_CATEGORIES.map((cat) => {
                       const CatIcon = categoryIcons[cat.value] || categoryIcons.general;
@@ -197,8 +198,8 @@ export default function PostEditor({ initialData, isEdit = false }) {
                             setShowCategoryDropdown(false);
                           }}
                           className={cn(
-                            "w-full text-left px-3 py-2 text-xs font-medium rounded-xl transition-colors flex items-center gap-2",
-                            category === cat.value ? "bg-primary-600 text-white" : "text-gray-400 hover:bg-white/5"
+                            "w-full text-left px-3 py-2.5 text-[13px] font-medium rounded-xl transition-all flex items-center gap-2.5",
+                            category === cat.value ? "bg-primary-50/50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400" : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                           )}
                         >
                           <CatIcon className="w-4 h-4" />
@@ -213,51 +214,54 @@ export default function PostEditor({ initialData, isEdit = false }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center p-1 bg-white/5 border border-white/10 rounded-xl mr-2">
+            <div className="flex items-center p-1 bg-gray-100/80 dark:bg-[#0B1120] border border-gray-200 dark:border-white/10 rounded-xl h-10">
               <button
                 type="button"
                 onClick={() => setIsPreview(false)}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
-                  !isPreview ? "bg-white/10 text-white shadow-sm" : "text-gray-500 hover:text-gray-300"
+                  "flex items-center justify-center gap-1.5 px-3 h-full rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all",
+                  !isPreview ? "bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                 )}
               >
-                <Edit3 className="w-3 h-3" /> Edit
+                <Edit3 className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Edit</span>
               </button>
               <button
                 type="button"
                 onClick={() => setIsPreview(true)}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all",
-                  isPreview ? "bg-white/10 text-white shadow-sm" : "text-gray-500 hover:text-gray-300"
+                  "flex items-center justify-center gap-1.5 px-3 h-full rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all",
+                  isPreview ? "bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm" : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                 )}
               >
-                <Eye className="w-3 h-3" /> Preview
+                <Eye className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Preview</span>
               </button>
             </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-xl shadow-primary-500/20 disabled:opacity-50 transition-all h-10"
-            >
-              {submitting ? (
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
-              )}
-              <span>{isEdit ? "Update" : "Publish"}</span>
-            </button>
+            <div className="w-[120px]">
+              <Button
+                type="submit"
+                disabled={submitting}
+                onClick={handleSubmit(onSubmit)}
+              >
+                {submitting ? (
+                  <div className="w-4 h-4 border-2 border-primary-100 dark:border-white/30 border-t-primary-600 dark:border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">{isEdit ? "Update" : "Publish"}</span>
+                <span className="sm:hidden">{isEdit ? "Upd" : "Post"}</span>
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Main Editor Surface */}
-        <div className="bg-white/[0.02] border border-white/10 shadow-2xl shadow-black/40 rounded-2xl overflow-hidden transition-all duration-300">
+        <div className="bg-white dark:bg-white/[0.02] border border-gray-200/60 dark:border-white/10 shadow-lg dark:shadow-2xl dark:shadow-black/40 rounded-2xl overflow-hidden transition-all duration-300">
           
           {!isPreview ? (
-            <div className="flex flex-col h-full min-h-[500px]">
+            <div className="flex flex-col h-full min-h-[600px] md:min-h-[700px]">
               {/* Integrated Toolbar */}
-              <div className="flex items-center gap-1 p-1 border-b border-white/5 bg-white/[0.02] overflow-x-auto whitespace-nowrap scrollbar-hide">
+              <div className="flex items-center gap-1 p-1 border-b border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-white/[0.02] overflow-x-auto whitespace-nowrap scrollbar-hide">
                 {[
                   { icon: Bold, action: () => insertMarkdown("**", "**"), label: "Bold" },
                   { icon: Italic, action: () => insertMarkdown("*", "*"), label: "Italic" },
@@ -271,7 +275,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
                     key={i}
                     type="button"
                     onClick={tool.action}
-                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl text-white/40 hover:bg-white/5 hover:text-white transition-all"
+                    className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl text-gray-400 dark:text-white/40 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-white transition-all"
                     title={tool.label}
                   >
                     <tool.icon className="w-4 h-4" />
@@ -280,12 +284,12 @@ export default function PostEditor({ initialData, isEdit = false }) {
               </div>
 
               {/* Writing Surface */}
-              <div className="p-5 md:p-10 space-y-5">
+              <div className="p-4 sm:p-5 md:p-8 space-y-6 flex-1 flex flex-col">
                 <input
                   {...register("title")}
                   placeholder="New zikr title here..."
                   autoFocus
-                  className="w-full bg-transparent border-none text-2xl md:text-3xl font-semibold focus:outline-none placeholder:text-white/10 text-white p-0 leading-tight tracking-tight selection:bg-primary-500/20"
+                  className="w-full bg-transparent border-none text-xl md:text-2xl font-semibold focus:outline-none placeholder:text-gray-300 dark:placeholder:text-white/10 text-gray-900 dark:text-white p-0 leading-tight tracking-tight selection:bg-primary-500/20"
                 />
 
                 <div className="flex flex-wrap gap-2 items-center">
@@ -300,7 +304,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
                     onChange={(e) => setTagInput(e.target.value)}
                     onKeyDown={addTag}
                     placeholder={tags.length === 0 ? "Add tags..." : "Add more tags"}
-                    className="flex-1 bg-transparent border-none text-[11px] font-semibold focus:outline-none min-w-[150px] placeholder:text-white/10 text-primary-500/60"
+                    className="flex-1 bg-transparent border-none text-[13px] font-semibold focus:outline-none min-w-[120px] placeholder:text-gray-300 dark:placeholder:text-white/10 text-primary-600 dark:text-primary-500/60"
                   />
                 </div>
 
@@ -312,7 +316,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
                   />
                 )}
 
-                <div className="relative min-h-[400px] pt-1">
+                <div className="relative flex-1 pt-2">
                   <textarea
                     {...register("content")}
                     ref={(e) => {
@@ -320,7 +324,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
                       textareaRef.current = e;
                     }}
                     placeholder="Tell your story... Markdown is fully supported."
-                    className="w-full h-full bg-transparent resize-none focus:outline-none text-sm leading-relaxed text-white/80 placeholder:text-white/10 min-h-[500px] py-1 selection:bg-primary-500/20"
+                    className="w-full h-full bg-transparent resize-none focus:outline-none text-[15px] leading-relaxed text-gray-700 dark:text-white/80 placeholder:text-gray-300 dark:placeholder:text-white/10 min-h-[400px] md:min-h-[500px] py-2 selection:bg-primary-500/20"
                   />
                   {errors.content && (
                     <p className="text-[11px] font-bold text-red-500 mt-2">× {errors.content.message}</p>
@@ -329,7 +333,7 @@ export default function PostEditor({ initialData, isEdit = false }) {
               </div>
             </div>
           ) : (
-            <div className="p-5 md:p-10 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="p-4 sm:p-5 md:p-10 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300 min-h-[600px]">
               {/* Preview Mode Rendering - EXACT MATCH WITH POST PAGE */}
               <div className="space-y-3">
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight tracking-tight">

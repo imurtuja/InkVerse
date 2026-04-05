@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import useStore from "@/store/useStore";
 import NotificationsDropdown from "./NotificationsDropdown";
+import UserAvatar from "@/components/ui/UserAvatar";
+import Button from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 export default function Navbar() {
@@ -84,30 +86,30 @@ export default function Navbar() {
 
   if (session) {
     return (
-      <nav className="glass-nav fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/70 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10 h-14">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-[#030712]/60 backdrop-blur-2xl border-b border-gray-200/50 dark:border-white/[0.04] h-[60px] shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all">
         <div className="max-w-5xl mx-auto px-3 md:px-4 h-full">
           <div className="flex items-center justify-between h-full gap-4">
             <BrandLogo />
 
             {/* Search Bar */}
-            <form onSubmit={handleSearch} className="flex-1 max-w-md hidden md:block">
+            <form onSubmit={handleSearch} className="flex-1 max-w-lg hidden md:block mx-8">
               <div className="relative group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" />
                 <input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search titles, people, tags..."
-                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-gray-100 dark:bg-white/[0.06] border border-transparent focus:border-primary-500/30 dark:focus:border-white/20 text-sm focus:outline-none transition-all h-10 w-full"
+                  className="w-full pl-10 pr-4 py-2 rounded-2xl bg-gray-100/80 dark:bg-white/[0.04] border border-transparent focus:bg-white dark:focus:bg-[#0B1120] focus:border-primary-500/30 dark:focus:border-white/10 text-[14px] focus:outline-none transition-all h-10 placeholder:text-gray-500 dark:placeholder:text-gray-500 shadow-inner dark:shadow-none"
                 />
               </div>
             </form>
 
-            <div className="flex items-center gap-2.5" ref={menuRef}>
+            <div className="flex items-center gap-3" ref={menuRef}>
               {/* Admin Button (Desktop Only) */}
               {session.user?.role === "admin" && (
                 <Link
                   href="/admin"
-                  className="hidden md:flex items-center gap-1.5 px-3 h-9 rounded-xl text-xs font-semibold text-white/40 hover:text-white hover:bg-white/5 transition-all duration-200"
+                  className="hidden md:flex items-center justify-center gap-1.5 px-4 h-10 rounded-xl text-[13px] font-semibold text-gray-500 dark:text-white/40 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
                 >
                   <Shield className="w-3.5 h-3.5" />
                   <span>Admin</span>
@@ -123,8 +125,8 @@ export default function Navbar() {
                 {theme === "dark" ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
               </button>
 
-              {/* Notification Button */}
-              <div className="relative">
+              {/* Notification Button — hidden on mobile (in MobileNav instead) */}
+              <div className="relative hidden md:block">
                 <button
                   onClick={() => setIsNotifOpen(!isNotifOpen)}
                   className={cn(
@@ -140,13 +142,11 @@ export default function Navbar() {
                 <NotificationsDropdown isOpen={isNotifOpen} onClose={() => setIsNotifOpen(false)} />
               </div>
 
-              {/* Create Post Page (Desktop Only) */}
-              <Link
-                href="/post/new"
-                className="hidden md:flex items-center gap-1.5 px-4 h-9 rounded-xl bg-primary-600 text-white shadow-lg shadow-primary-500/20 text-sm font-medium hover:bg-primary-700 transition-all duration-200"
-              >
-                <PlusCircle className="w-4 h-4" />
-                <span>Create</span>
+              <Link href="/post/new" className="hidden md:block w-[100px]">
+                <Button>
+                  <PlusCircle className="w-4 h-4" />
+                  <span className="hidden lg:inline">Create</span>
+                </Button>
               </Link>
 
               {/* Profile Avatar & Logout Logic */}
@@ -162,15 +162,15 @@ export default function Navbar() {
                 ) : (
                   <Link
                     href={`/profile/${session.user?.username}`}
-                    className="block w-10 h-10 rounded-xl border border-gray-200 dark:border-white/10 p-[1px] hover:border-primary-500/50 transition-all overflow-hidden bg-gray-100 dark:bg-white/5"
+                    className="block"
                   >
-                    {session.user?.image ? (
-                      <img src={session.user.image} alt="" className="w-full h-full object-cover rounded-[10px]" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center font-bold text-sm text-gray-600 dark:text-gray-300">
-                        {session.user?.name?.[0]?.toUpperCase()}
-                      </div>
-                    )}
+                    <UserAvatar
+                      src={session.user?.image}
+                      name={session.user?.name}
+                      size="md"
+                      ring
+                      className="ring-1 ring-white/10 hover:ring-primary-500/50"
+                    />
                   </Link>
                 )}
               </div>
@@ -182,7 +182,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="glass-nav fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-black/60 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-[#030712]/60 backdrop-blur-2xl border-b border-gray-200/50 dark:border-white/[0.04] h-[60px] shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all">
       <div className="max-w-5xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-14">
           <BrandLogo />

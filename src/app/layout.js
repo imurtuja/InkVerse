@@ -2,8 +2,7 @@ import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
-import Navbar from "@/components/layout/Navbar";
-import MobileNav from "@/components/layout/MobileNav";
+import ConditionalNav from "@/components/layout/ConditionalNav";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -52,14 +51,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preload" as="image" href="/default-avatar.webp" type="image/webp" />
+      </head>
       <body className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} font-sans antialiased`} suppressHydrationWarning>
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <Navbar />
-            <main className="min-h-screen pt-14 pb-20 md:pb-0">
+            <ConditionalNav />
+            <main className="min-h-screen pt-14 pb-16 md:pb-0">
               {children}
             </main>
-            <MobileNav />
             <Toaster
               position="top-center"
               toastOptions={{

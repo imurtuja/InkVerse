@@ -56,6 +56,24 @@ const UserSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+    banReason: {
+      type: String,
+      maxlength: [500, "Reason cannot exceed 500 characters"],
+      default: null,
+    },
+    banExpiresAt: {
+      type: Date,
+      default: null,
+    },
+    riskScore: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     provider: {
       type: String,
       enum: ["credentials", "google", "github"],

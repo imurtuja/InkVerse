@@ -88,6 +88,10 @@ export async function PATCH(request, { params }) {
       user.username = u;
     }
 
+    if (body.isBanned !== undefined) {
+      user.isBanned = Boolean(body.isBanned);
+    }
+
     await user.save();
 
     return NextResponse.json({
@@ -99,6 +103,7 @@ export async function PATCH(request, { params }) {
         bio: user.bio,
         image: user.image,
         role: user.role,
+        isBanned: user.isBanned,
         provider: user.provider,
         createdAt: user.createdAt,
       },
@@ -122,48 +127,36 @@ export async function DELETE(request, { params }) {
     }
 
     if (id === session.user.id) {
-      return NextResponse.json({ error: "Cannot delete your own admin account" }, { status: 400 });
+      return NextResponse.json({ error: "Cannot restrict your own admin account" }, { status: 400 });
     }
 
     await connectDB();
 
-    const target = await User.findById(id).select("role email");
+    const target = await User.findById(id).select("role isBanned");
     if (!target) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     if (target.role === "admin") {
       return NextResponse.json(
-        { error: "Admin accounts cannot be removed from the panel. Manage them via database directly." },
+        { error: "Admin accounts cannot be banned." },
         { status: 403 }
       );
     }
 
-    const userId = new mongoose.Types.ObjectId(id);
-    const posts = await Post.find({ author: userId }).select("_id").lean();
-    const postIds = posts.map((p) => p._id);
-
-    if (postIds.length) {
-      await Comment.deleteMany({ post: { $in: postIds } });
-      await Post.deleteMany({ _id: { $in: postIds } });
+    target.isBanned = !target.isBanned;
+    if (target.isBanned) {
+      target.banReason = "Banned by Administrator manually.";
+      target.banExpiresAt = null; // Infinite duration
+    } else {
+      target.banReason = null;
+      target.banExpiresAt = null;
     }
+    await target.save();
 
-    await Comment.deleteMany({ author: userId });
-    await Notification.deleteMany({
-      $or: [{ recipient: userId }, { sender: userId }],
-    });
-    
-    await User.updateMany({}, { $pull: { followers: userId, following: userId } });
-    
-    if (target.email) {
-      await PendingUser.deleteMany({ email: target.email });
-    }
-    
-    await User.findByIdAndDelete(userId);
-
-    return NextResponse.json({ success: true, message: "User and all related content removed permanently" });
+    return NextResponse.json({ success: true, message: target.isBanned ? "User restricted successfully." : "User restrictions lifted.", isBanned: target.isBanned });
   } catch (e) {
-    console.error(`[Admin DELETE User Error]: ${e.message}`, e);
-    return NextResponse.json({ error: "Internal server error while removing user" }, { status: 500 });
+    console.error(`[Admin DELETE Ban User Error]: ${e.message}`, e);
+    return NextResponse.json({ error: "Internal server error while banning user" }, { status: 500 });
   }
 }

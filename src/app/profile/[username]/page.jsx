@@ -16,6 +16,7 @@ import {
   Grid,
 } from "lucide-react";
 import PostCard from "@/components/posts/PostCard";
+import UserAvatar from "@/components/ui/UserAvatar";
 import { cn, formatDate } from "@/lib/utils";
 import toast from "react-hot-toast";
 import EditProfileModal from "@/components/profile/EditProfileModal";
@@ -71,7 +72,7 @@ export default function ProfilePage({ params }) {
 
   if (loading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6">
         <div className="bg-white/40 dark:bg-[#030712]/10 backdrop-blur-md border border-gray-100 dark:border-[#1e293b]/30 rounded-2xl p-8 space-y-6">
           <div className="flex items-center gap-6">
             <div className="w-24 h-24 rounded-2xl bg-gray-200 dark:bg-[#1e293b] animate-pulse" />
@@ -88,7 +89,7 @@ export default function ProfilePage({ params }) {
 
   if (!profile) {
     return (
-      <div className="max-w-5xl mx-auto px-4 md:px-6 py-14 text-center">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-14 text-center">
         <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">User not found</h2>
         <Link href="/feed" className="text-blue-500 hover:underline flex items-center justify-center gap-2">
           <ChevronLeft className="w-4 h-4" /> Back to Feed
@@ -98,7 +99,7 @@ export default function ProfilePage({ params }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 md:px-0 py-4 space-y-4 text-gray-900 dark:text-gray-100">
+    <div className="max-w-3xl mx-auto px-4 md:px-0 py-4 space-y-4 text-gray-900 dark:text-gray-100">
       {/* Minimalist Profile Header */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -134,16 +135,13 @@ export default function ProfilePage({ params }) {
 
         <div className="px-4 sm:px-6 pb-6 -mt-8 sm:-mt-10 relative z-10">
           <div className="flex items-end justify-between gap-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gray-200 dark:bg-[#030712] flex items-center justify-center text-white text-xl font-bold overflow-hidden ring-4 ring-white dark:ring-[#030712] shadow-md">
-              {profile.image ? (
-                <img src={profile.image} alt="" className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-500 to-accent-600 font-bold">
-                   {profile.name?.[0]?.toUpperCase()}
-                </div>
-              )}
+              <UserAvatar
+                src={profile.image}
+                name={profile.name}
+                size="lg"
+                className="ring-4 ring-white dark:ring-[#030712] shadow-md w-16 h-16 sm:w-20 sm:h-20 rounded-xl"
+              />
             </div>
-          </div>
           
           <div className="mt-3 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div className="min-w-0">
@@ -198,7 +196,7 @@ export default function ProfilePage({ params }) {
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">No activity yet</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {posts.map((post) => (
               <PostCard key={post._id} post={post} onDelete={handleDelete} />
             ))}

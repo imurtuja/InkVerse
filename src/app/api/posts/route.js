@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Post from "@/models/Post";
+import User from "@/models/User";
 import { auth } from "@/lib/auth";
+import { autoModeratePost } from "@/lib/moderationService";
 
 export async function GET(request) {
   try {
@@ -12,9 +14,21 @@ export async function GET(request) {
     const category = searchParams.get("category");
     const author = searchParams.get("author");
 
-    const query = {};
+    const bannedUsers = await User.find({ isBanned: true }).select('_id').lean();
+    const bannedUserIds = bannedUsers.map(u => u._id);
+
+    const query = { 
+      $or: [{ status: "active" }, { status: { $exists: false } }],
+      author: { $nin: bannedUserIds }
+    };
+    
     if (category && category !== "all") query.category = category;
-    if (author) query.author = author;
+    if (author) {
+      if (bannedUserIds.some(id => id.toString() === author.toString())) {
+        return NextResponse.json({ posts: [], pagination: null });
+      }
+      query.author = author;
+    }
 
     const skip = (page - 1) * limit;
 
@@ -67,7 +81,12 @@ export async function POST(request) {
       lang: category === "code" ? language : undefined,
       tags: tags || [],
       images: images || [],
+      status: "active",
+      autoFlagged: false,
     });
+
+    // Asynchronously moderate evaluating flags transparently allowing frontends rapid resolutions.
+    await autoModeratePost(session.user.id, post._id, content, title);
 
     const populated = await Post.findById(post._id)
       .populate("author", "name username image")

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -13,6 +13,9 @@ import {
   Share2,
   Trash2,
   Edit2,
+  MoreVertical,
+  Flag,
+  Link2,
   Code2,
   Feather,
   Quote,
@@ -24,29 +27,67 @@ import {
 import { cn, formatDate } from "@/lib/utils";
 import toast from "react-hot-toast";
 import Modal from "@/components/ui/Modal";
+import UserAvatar from "@/components/ui/UserAvatar";
+import CodeBlock from "@/components/ui/CodeBlock";
 
+/* ── Category config ─────────────────────────────────────── */
 const categoryDisplay = {
-  code: { label: "Code", bgClass: "bg-[#1e3a8a]", textClass: "text-[#93c5fd]", icon: <Code2 className="w-3 h-3" /> },
-  poetry: { label: "Poetry", bgClass: "bg-[#6b21a8]", textClass: "text-[#d8b4fe]", icon: <Feather className="w-3 h-3" /> },
-  quote: { label: "Quote", bgClass: "bg-[#b45309]", textClass: "text-[#fcd34d]", icon: <Quote className="w-3 h-3" /> },
-  shayri: { label: "Shayri", bgClass: "bg-[#9d174d]", textClass: "text-[#fbcfe8]", icon: <Book className="w-3 h-3" /> },
-  song: { label: "Song", bgClass: "bg-[#047857]", textClass: "text-[#6ee7b7]", icon: <Music className="w-3 h-3" /> },
-  note: { label: "Note", bgClass: "bg-[#4338ca]", textClass: "text-[#a5b4fc]", icon: <StickyNote className="w-3 h-3" /> },
-  general: { label: "General", bgClass: "bg-[#334155]", textClass: "text-[#cbd5e1]", icon: <Globe className="w-3 h-3" /> },
+  code: { label: "Code", icon: Code2, color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
+  poetry: { label: "Poetry", icon: Feather, color: "text-purple-400 bg-purple-500/10 border-purple-500/20" },
+  quote: { label: "Quote", icon: Quote, color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+  shayri: { label: "Shayri", icon: Book, color: "text-pink-400 bg-pink-500/10 border-pink-500/20" },
+  song: { label: "Song", icon: Music, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+  note: { label: "Note", icon: StickyNote, color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20" },
+  general: { label: "General", icon: Globe, color: "text-slate-400 bg-slate-500/10 border-slate-500/20" },
 };
 
+/* ── PostCard ─────────────────────────────────────────────── */
 export default function PostCard({ post, onDelete }) {
   const { data: session } = useSession();
   const router = useRouter();
+
+  /* state */
   const [liked, setLiked] = useState(post.likes?.includes(session?.user?.id));
   const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [isReporting, setIsReporting] = useState(false);
+
   const [isDeleting, setIsDeleting] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [isClamped, setIsClamped] = useState(false);
+
+  const contentRef = useRef(null);
+  const menuRef = useRef(null);
 
   const isOwner = session?.user?.id === (post.author?._id || post.author);
   const catConfig = categoryDisplay[post.category] || categoryDisplay.general;
+  const CatIcon = catConfig.icon;
 
+  /* detect content clamp */
+  useEffect(() => {
+    const el = contentRef.current;
+    if (el) {
+      setIsClamped(el.scrollHeight > el.clientHeight + 2);
+    }
+  }, [post.content, expanded]);
+
+  /* close menu on outside click */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [menuOpen]);
+
+  /* ── handlers ─────────────────────────────────────────── */
   const handleLike = async (e) => {
     e.stopPropagation();
     if (!session) return toast.error("Please login to like");
@@ -68,13 +109,43 @@ export default function PostCard({ post, onDelete }) {
   };
 
   const copyShareLink = async (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     const shareUrl = `${window.location.origin}/post/${post?._id}`;
     try {
       await navigator.clipboard.writeText(shareUrl);
       toast.success("Link copied!");
     } catch {
       toast.error("Failed to copy");
+    }
+  };
+
+  const submitReport = async () => {
+    if (!reportReason.trim()) return toast.error("Please enter a reason");
+    setIsReporting(true);
+    try {
+      const res = await fetch("/api/report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          itemType: "Post",
+          itemId: post._id,
+          reason: reportReason,
+          isAuto: false,
+        }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+      const data = await res.json();
+
+      toast.success(data.message || "Report submitted successfully");
+      setIsReportModalOpen(false);
+      setReportReason("");
+    } catch (e) {
+      toast.error(e.message || "Failed to submit report");
+    } finally {
+      setIsReporting(false);
     }
   };
 
@@ -98,147 +169,243 @@ export default function PostCard({ post, onDelete }) {
     router.push(`/post/${post._id}`);
   };
 
+  /* ── render ───────────────────────────────────────────── */
   return (
     <>
-      <article 
+      <article
         onClick={handleCardClick}
-className="group bg-white/[0.02] border border-white/10 shadow-xl shadow-black/40 rounded-2xl overflow-hidden transition-colors duration-200 text-gray-100 cursor-pointer w-full hover:bg-black/20"      >
-        <div className="p-3 flex flex-col gap-2">
-          {/* Header */}
-          <div className="flex items-start justify-between">
-            <div onClick={(e) => e.stopPropagation()} className="min-w-0 pr-3 flex-1 flex items-center gap-2">
-              <Link href={`/profile/${post.author?.username}`} className="flex-shrink-0 transition-opacity">
-                <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-[10px] overflow-hidden shadow-sm">
-                  {post.author?.image ? (
-                    <img src={post.author.image} alt="" className="w-full h-full object-cover" />
-                  ) : (
-                    post.author?.name?.[0]?.toUpperCase()
-                  )}
-                </div>
+        className="group bg-white dark:bg-[#0B1120] border border-gray-200/60 dark:border-white/[0.06] rounded-xl overflow-hidden cursor-pointer transition-all duration-200 hover:bg-gray-50 dark:hover:bg-white/[0.03] hover:border-gray-300/60 dark:hover:border-white/[0.1]"
+      >
+        <div className="p-3.5 md:p-5 flex flex-col gap-2.5">
+          {/* ── HEADER ─────────────────────────────────── */}
+          <div className="flex items-start gap-2.5">
+            {/* Avatar */}
+            <Link
+              href={`/profile/${post.author?.username}`}
+              onClick={(e) => e.stopPropagation()}
+              className="flex-shrink-0"
+            >
+              <UserAvatar
+                src={post.author?.image}
+                name={post.author?.name}
+                size="sm"
+                ring
+              />
+            </Link>
+
+            {/* User Info — takes remaining space */}
+            <div className="min-w-0 flex-1">
+              <Link
+                href={`/profile/${post.author?.username}`}
+                onClick={(e) => e.stopPropagation()}
+                className="block text-[14px] font-semibold text-gray-900 dark:text-white truncate leading-tight hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
+              >
+                {post.author?.name}
               </Link>
-              <div className="min-w-0 flex-1">
-                <Link
-                  href={`/profile/${post.author?.username}`}
-                  className="block text-[15px] font-semibold leading-snug text-white [overflow-wrap:anywhere] hover:text-primary-400"
-                >
-                  {post.author?.name}
-                </Link>
-                <p className="mt-0.5 flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-[15px] font-light leading-snug text-white/60">
-                  <span className="min-w-0 break-all">@{post.author?.username}</span>
-                  <span className="text-white/25" aria-hidden>
-                    •
-                  </span>
-                  <time className="whitespace-nowrap text-white/60" dateTime={post.createdAt}>
-                    {formatDate(post.createdAt)}
-                  </time>
-                </p>
-              </div>
+              <p className="flex items-center gap-1 text-[13px] text-gray-500 dark:text-white/40 leading-tight mt-0.5 min-w-0">
+                <span className="truncate max-w-[120px] sm:max-w-[180px]">@{post.author?.username}</span>
+                <span className="text-gray-300 dark:text-white/20 flex-shrink-0">·</span>
+                <time className="whitespace-nowrap flex-shrink-0" dateTime={post.createdAt}>
+                  {formatDate(post.createdAt)}
+                </time>
+              </p>
             </div>
 
-            <div className="flex items-center gap-1.5 flex-shrink-0 pt-0.5" onClick={(e) => e.stopPropagation()}>
-              <span className={cn("inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[14px] font-semibold tracking-tight uppercase", catConfig.bgClass, catConfig.textClass)}>
-                {catConfig.icon}
+            {/* Right side: Category badge + 3-dot menu */}
+            <div className="flex items-center gap-1.5 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+              <span className={cn(
+                "inline-flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2 py-[2px] sm:py-0.5 rounded-full text-[8px] sm:text-[10px] font-bold uppercase tracking-wider border",
+                catConfig.color
+              )}>
+                <CatIcon className="w-2.5 h-2.5 sm:w-2.5 sm:h-2.5" />
                 {catConfig.label}
               </span>
-              
-              {isOwner && (
-                <div className="flex items-center gap-0.5">
-                  <Link 
-                    href={`/post/${post._id}/edit`} 
-                    className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-primary-500 transition-colors"
-                    title="Edit"
-                  >
-                    <Edit2 className="w-3.5 h-3.5" />
-                  </Link>
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); }} 
-                    className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-red-500 transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              )}
+
+              {/* 3-dot menu */}
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className="p-1.5 rounded-lg text-gray-400 dark:text-white/40 hover:text-gray-600 dark:hover:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                  aria-label="Post actions"
+                >
+                  <MoreVertical className="w-4 h-4" />
+                </button>
+
+                {menuOpen && (
+                  <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-[#111827] border border-gray-200 dark:border-white/10 rounded-xl shadow-xl dark:shadow-2xl dark:shadow-black/50 py-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {isOwner && (
+                      <>
+                        <Link
+                          href={`/post/${post._id}/edit`}
+                          className="flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                            setIsDeleteModalOpen(true);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/5 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          Delete
+                        </button>
+                        <div className="h-px bg-gray-100 dark:bg-white/5 my-1" />
+                      </>
+                    )}
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        copyShareLink();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                    >
+                      <Link2 className="w-3.5 h-3.5" />
+                      Copy link
+                    </button>
+                    {!isOwner && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMenuOpen(false);
+                          if (!session) {
+                            toast.error("Please login to report");
+                            return;
+                          }
+                          setIsReportModalOpen(true);
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                      >
+                        <Flag className="w-3.5 h-3.5" />
+                        Report
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Body Content */}
-          <div className="flex flex-col gap-2">
+          {/* ── BODY ────────────────────────────────────── */}
+          <div className="flex flex-col gap-1.5">
             {post.title && (
-              <h2 className="text-[15px] font-bold text-white leading-snug">
+              <h2 className="text-[15px] md:text-base font-semibold text-gray-900 dark:text-white leading-snug tracking-tight">
                 {post.title}
               </h2>
             )}
 
+            {/* Content with clamp */}
             <div className="relative">
-              <div className={cn(
-              "text-[15px] text-white/90 leading-relaxed prose prose-sm md:prose-base prose-invert max-w-none break-words",
-              "prose-pre:bg-black/20 prose-pre:border prose-pre:border-white/5 prose-pre:rounded-xl prose-pre:text-[15px] prose-code:text-[15px] prose-a:text-primary-500 prose-blockquote:border-l-primary-500 prose-blockquote:bg-white/5 prose-blockquote:py-1 prose-blockquote:px-3",
-              "prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-tight",
-              `post-${post.category}`
-            )}>
-                <ReactMarkdown rehypePlugins={[rehypeHighlight]} remarkPlugins={[remarkGfm]}>
+              <div
+                ref={contentRef}
+                className={cn(
+                  "text-[14px] text-gray-700 dark:text-white/80 leading-relaxed prose prose-sm prose-gray dark:prose-invert max-w-none break-words",
+                  "prose-pre:my-0 prose-pre:bg-transparent prose-pre:border-0 prose-pre:p-0 prose-pre:rounded-none",
+                  "prose-code:text-xs prose-code:text-primary-500 dark:prose-code:text-primary-400",
+                  "prose-a:text-primary-500 dark:prose-a:text-primary-400 prose-a:no-underline hover:prose-a:underline",
+                  "prose-blockquote:border-l-primary-500/50 prose-blockquote:bg-gray-50 dark:prose-blockquote:bg-white/[0.02] prose-blockquote:py-0.5 prose-blockquote:px-3 prose-blockquote:not-italic prose-blockquote:text-gray-500 dark:prose-blockquote:text-white/60",
+                  "prose-headings:text-gray-900 dark:prose-headings:text-white prose-headings:font-semibold prose-headings:text-sm",
+                  "prose-ul:my-1 prose-ol:my-1 prose-li:my-0",
+                  "prose-p:my-1",
+                  `post-${post.category}`,
+                  !expanded && "line-clamp-4"
+                )}
+              >
+                <ReactMarkdown
+                  rehypePlugins={[rehypeHighlight]}
+                  remarkPlugins={[remarkGfm]}
+                  components={{ pre: CodeBlock }}
+                >
                   {post.content}
                 </ReactMarkdown>
               </div>
+
+              {/* Show more / less */}
+              {(isClamped || expanded) && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpanded(!expanded);
+                    if (expanded && contentRef.current) {
+                      setTimeout(() => {
+                        const el = contentRef.current;
+                        if (el) setIsClamped(el.scrollHeight > el.clientHeight + 2);
+                      }, 0);
+                    }
+                  }}
+                  className="mt-1 text-[13px] font-medium text-primary-500 dark:text-primary-400 hover:text-primary-600 dark:hover:text-primary-300 transition-colors"
+                >
+                  {expanded ? "Show less" : "Show more"}
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Tags */}
-          {post.tags?.length > 0 && (
-            <div className="flex flex-wrap gap-2 items-center" onClick={(e) => e.stopPropagation()}>
-              {post.tags.map((tag) => (
-                <Link 
-                  key={tag} 
-                  href={`/search?q=${tag}`} 
-                  className="text-[15px] font-medium text-primary-500/80 hover:text-primary-400 transition-colors"
-                >
-                  #{tag}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {/* Footer Interactions */}
-          <div className="flex items-center gap-5 mt-1 border-t border-white/5 pt-3">
-            <button
-              onClick={handleLike}
-              className={cn("flex items-center gap-1.5 text-s font-semibold transition-colors group/btn",
-                liked ? "text-pink-500" : "text-white/40 hover:text-pink-500"
-              )}
-              title={liked ? "Unlike" : "Like"}
-            >
-              <div className="p-2 rounded-lg group-hover/btn:bg-pink-500/10 transition-colors">
-                <Heart className={cn("w-4.5 h-4.5 transition-all text-pink-500", liked && "fill-current")} />
+          {/* ── FOOTER ─────────────────────────────────── */}
+          <div className="flex flex-col gap-2 mt-0.5">
+            {/* Tags */}
+            {post.tags?.length > 0 && (
+              <div className="flex flex-wrap gap-1.5" onClick={(e) => e.stopPropagation()}>
+                {post.tags.map((tag) => (
+                  <Link
+                    key={tag}
+                    href={`/search?q=${tag}`}
+                    className="text-[13px] font-medium text-primary-500/80 dark:text-primary-500/70 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
+                  >
+                    #{tag}
+                  </Link>
+                ))}
               </div>
-              {likesCount > 0 && <span className="tabular-nums">{likesCount}</span>}
-            </button>
-            
-            <div 
-              className="flex items-center gap-1.5 text-white/40 hover:text-primary-500 transition-colors text-s font-semibold cursor-pointer group/btn"
-              title="Comments"
-            >
-              <div className="p-2 rounded-lg group-hover/btn:bg-primary-500/10 transition-colors">
-                <MessageSquare className="w-4.5 h-4.5" />
-              </div>
-              {post.commentsCount > 0 && <span className="tabular-nums">{post.commentsCount}</span>}
-            </div>
+            )}
 
-            <button
-              onClick={handleShare}
-              className="p-2 rounded-lg text-white/40 hover:text-primary-500 hover:bg-white/5 transition-colors ml-auto"
-              title="Share"
-            >
-              <Share2 className="w-4.5 h-4.5" />
-            </button>
+            {/* Engagement row */}
+            <div className="flex items-center border-t border-gray-100 dark:border-white/[0.04] pt-2 -mb-0.5" onClick={(e) => e.stopPropagation()}>
+              {/* Like */}
+              <button
+                onClick={handleLike}
+                className={cn(
+                  "flex items-center gap-1.5 pr-4 transition-colors group/like",
+                  liked ? "text-pink-500" : "text-gray-400 dark:text-white/35 hover:text-pink-500"
+                )}
+                title={liked ? "Unlike" : "Like"}
+              >
+                <div className="p-1.5 rounded-md group-hover/like:bg-pink-500/10 transition-colors">
+                  <Heart className={cn("w-4 h-4", liked && "fill-current")} />
+                </div>
+                <span className="text-xs font-semibold tabular-nums">
+                  {likesCount > 0 ? likesCount : ""}
+                </span>
+              </button>
+
+              {/* Comment */}
+              <div className="flex items-center gap-1.5 pr-4 text-gray-400 dark:text-white/35 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group/comment cursor-pointer">
+                <div className="p-1.5 rounded-md group-hover/comment:bg-primary-500/10 transition-colors">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-semibold tabular-nums">
+                  {post.commentsCount > 0 ? post.commentsCount : ""}
+                </span>
+              </div>
+
+              {/* Share – pushed right */}
+              <button
+                onClick={handleShare}
+                className="ml-auto p-1.5 rounded-md text-gray-400 dark:text-white/35 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                title="Share"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </article>
 
-      {/* Share Modal */}
-      <Modal 
-        isOpen={isShareModalOpen} 
-        onClose={() => setIsShareModalOpen(false)} 
+      {/* ── Share Modal ─────────────────────────────────── */}
+      <Modal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
         title="Share inkVerse"
       >
         <div className="space-y-4">
@@ -261,14 +428,14 @@ className="group bg-white/[0.02] border border-white/10 shadow-xl shadow-black/4
           <div className="h-px w-full bg-gray-100 dark:bg-white/5"></div>
 
           <div className="space-y-1.5">
-            <p className="text-[15px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Short Link</p>
+            <p className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Short Link</p>
             <div className="flex items-center gap-2 p-2.5 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-xl">
-              <span className="flex-1 truncate font-medium text-[15px] text-gray-900 dark:text-white">
+              <span className="flex-1 truncate font-medium text-sm text-gray-900 dark:text-white">
                 {`${typeof window !== 'undefined' ? window.location.host : ''}/post/${post?._id?.substring(0, 7)}...`}
               </span>
-              <button 
+              <button
                 onClick={copyShareLink}
-                className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition-all shadow-sm"
+                className="px-3 py-1.5 bg-primary-600 text-white rounded-lg text-xs font-medium hover:bg-primary-700 transition-all shadow-sm"
               >
                 Copy
               </button>
@@ -277,10 +444,10 @@ className="group bg-white/[0.02] border border-white/10 shadow-xl shadow-black/4
         </div>
       </Modal>
 
-      {/* Delete Modal */}
-      <Modal 
-        isOpen={isDeleteModalOpen} 
-        onClose={() => setIsDeleteModalOpen(false)} 
+      {/* ── Delete Modal ────────────────────────────────── */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
         title="Delete Post?"
       >
         <div className="space-y-4 text-center">
@@ -290,7 +457,7 @@ className="group bg-white/[0.02] border border-white/10 shadow-xl shadow-black/4
           <div className="space-y-1.5">
             <p className="text-gray-900 dark:text-white font-bold text-base">Are you absolutely sure?</p>
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              This action cannot be undone. This zikr will be permanently removed from the verse.
+              This action cannot be undone. This post will be permanently removed.
             </p>
           </div>
           <div className="flex gap-2 pt-1">
@@ -306,6 +473,50 @@ className="group bg-white/[0.02] border border-white/10 shadow-xl shadow-black/4
               className="flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white font-medium text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-500/20 disabled:opacity-50"
             >
               {isDeleting ? "Deleting..." : "Delete Post"}
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ── Report Modal ────────────────────────────────── */}
+      <Modal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        title="Report Post"
+      >
+        <div className="space-y-4">
+          <p className="text-gray-900 dark:text-white text-sm">
+            Please describe why this post violates the community guidelines.
+          </p>
+          <div className="flex flex-col gap-2">
+            {["Spam", "Abuse", "Other"].map(reason => (
+              <button
+                key={reason}
+                onClick={() => setReportReason(reason)}
+                className={cn(
+                   "w-full h-10 rounded-xl border text-sm font-bold transition-all",
+                   reportReason === reason
+                     ? "bg-primary-50 dark:bg-primary-500/10 border-primary-500/50 text-primary-600 dark:text-primary-400"
+                     : "bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10"
+                )}
+              >
+                {reason}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-2 pt-2">
+            <button
+              onClick={() => setIsReportModalOpen(false)}
+              className="flex-1 h-10 px-4 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 font-medium text-sm hover:bg-gray-200 dark:hover:bg-white/10 transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={submitReport}
+              disabled={isReporting || !reportReason.trim()}
+              className="flex-1 h-10 px-4 rounded-xl bg-red-600 text-white font-medium text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-500/20 disabled:opacity-50"
+            >
+              {isReporting ? "Submitting..." : "Submit Report"}
             </button>
           </div>
         </div>
