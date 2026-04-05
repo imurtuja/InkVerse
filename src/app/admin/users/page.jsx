@@ -138,7 +138,7 @@ export default function AdminUsersPage() {
 
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center text-white text-sm font-bold shadow-md shrink-0 overflow-hidden">
-                 <img src={u.image || "/default-avatar.png"} onError={(e) => { e.target.src = "/default-avatar.png" }} alt="User" className="w-full h-full object-cover" />
+                 <img src={u.image || "/default-avatar.webp"} onError={(e) => { e.target.src = "/default-avatar.webp" }} alt="User" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0 pr-16 sm:pr-24">
                 <p className="font-bold text-gray-900 dark:text-white text-base truncate">{u.name}</p>
@@ -186,7 +186,7 @@ export default function AdminUsersPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B1A55] to-gray-800 flex items-center justify-center text-white text-[12px] font-bold shadow-md overflow-hidden shrink-0">
-                         <img src={u.image || "/default-avatar.png"} onError={(e) => { e.target.src = "/default-avatar.png" }} alt="User" className="w-full h-full object-cover" />
+                         <img src={u.image || "/default-avatar.webp"} onError={(e) => { e.target.src = "/default-avatar.webp" }} alt="User" className="w-full h-full object-cover" />
                       </div>
                       <div className="min-w-0">
                         <p className="font-bold text-white text-sm truncate leading-tight">{u.name}</p>

@@ -93,7 +93,7 @@ export default function AdminAppealsPage() {
           <div key={a._id} className="bg-white dark:bg-[#1B1A55]/60 border border-gray-200 dark:border-[#535C91]/30 rounded-2xl p-5 shadow-sm flex flex-col gap-3 backdrop-blur-xl relative">
              <div className="flex gap-3">
                 <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-black/20 flex items-center justify-center shrink-0 overflow-hidden">
-                   <img src={a.user?.image || "/default-avatar.png"} onError={(e) => e.target.src="/default-avatar.png"} className="w-full h-full object-cover"/>
+                   <img src={a.user?.image || "/default-avatar.webp"} onError={(e) => e.target.src="/default-avatar.webp"} className="w-full h-full object-cover"/>
                 </div>
                 <div className="flex-1 min-w-0 pr-20">
                    <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{a.user?.name}</p>
@@ -159,7 +159,7 @@ export default function AdminAppealsPage() {
                    <td className="px-6 py-4">
                      <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-black/20 flex items-center justify-center shrink-0 overflow-hidden border border-gray-200 dark:border-white/5">
-                           <img src={a.user?.image || "/default-avatar.png"} onError={(e) => e.target.src="/default-avatar.png"} className="w-full h-full object-cover"/>
+                           <img src={a.user?.image || "/default-avatar.webp"} onError={(e) => e.target.src="/default-avatar.webp"} className="w-full h-full object-cover"/>
                         </div>
                         <div className="min-w-0">
                            <p className="font-bold text-gray-900 dark:text-white text-sm truncate">{a.user?.name}</p>

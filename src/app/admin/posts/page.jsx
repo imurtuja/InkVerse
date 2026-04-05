@@ -110,7 +110,7 @@ export default function AdminPostsPage() {
                 <div className="flex items-center gap-2">
                    <div className="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-500/10 flex items-center justify-center text-[10px] font-black shrink-0 overflow-hidden text-primary-600 dark:text-primary-400">
                      {post.author ? (
-                       <img src={post.author.image || "/default-avatar.png"} onError={(e) => { e.target.src = "/default-avatar.png" }} className="w-full h-full object-cover" alt="Avatar"/>
+                       <img src={post.author.image || "/default-avatar.webp"} onError={(e) => { e.target.src = "/default-avatar.webp" }} className="w-full h-full object-cover" alt="Avatar"/>
                      ) : (
                        "?"
                      )}
@@ -169,7 +169,7 @@ export default function AdminPostsPage() {
                     <div className="flex items-center gap-3">
                        <div className="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-500/20 flex items-center justify-center text-[11px] font-black shrink-0 overflow-hidden text-primary-600 dark:text-primary-400">
                          {post.author ? (
-                           <img src={post.author.image || "/default-avatar.png"} onError={(e) => { e.target.src = "/default-avatar.png" }} className="w-full h-full object-cover" alt="Avatar"/>
+                           <img src={post.author.image || "/default-avatar.webp"} onError={(e) => { e.target.src = "/default-avatar.webp" }} className="w-full h-full object-cover" alt="Avatar"/>
                          ) : (
                            "?"
                          )}
