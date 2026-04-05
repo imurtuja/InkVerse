@@ -75,13 +75,13 @@ export default function ProfilePage({ params }) {
       <div className="max-w-3xl mx-auto px-4 md:px-6 py-6">
         <div className="bg-white/40 dark:bg-[#030712]/10 backdrop-blur-md border border-gray-100 dark:border-[#1e293b]/30 rounded-2xl p-8 space-y-6">
           <div className="flex items-center gap-6">
-            <div className="w-24 h-24 rounded-2xl bg-gray-200 dark:bg-[#1e293b] animate-pulse" />
+            <div className="w-24 h-24 rounded-full skeleton shrink-0" />
             <div className="space-y-3 flex-1">
-              <div className="h-6 w-1/3 bg-gray-200 dark:bg-[#1e293b] rounded-lg animate-pulse" />
-              <div className="h-4 w-1/4 bg-gray-200 dark:bg-[#1e293b] rounded-lg animate-pulse" />
+              <div className="h-6 w-1/3 skeleton rounded-lg" />
+              <div className="h-4 w-1/4 skeleton rounded-lg" />
             </div>
           </div>
-          <div className="h-20 bg-gray-100/50 dark:bg-[#1e293b]/50 rounded-xl animate-pulse" />
+          <div className="h-20 skeleton rounded-xl" />
         </div>
       </div>
     );

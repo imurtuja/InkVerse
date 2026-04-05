@@ -45,7 +45,7 @@ function CommentItem({ comment, postId, onReplyAdded }) {
       animate={{ opacity: 1, y: 0 }}
       className="group"
     >
-      <div className="flex gap-3 p-3 rounded-xl bg-white/[0.01] border border-white/[0.04] hover:border-white/[0.06] transition-colors">
+      <div className="flex gap-3 p-3 rounded-xl bg-gray-50/50 dark:bg-white/[0.01] border border-gray-100 dark:border-white/[0.04] hover:border-gray-200 dark:hover:border-white/[0.06] transition-colors">
         {/* Avatar */}
         <UserAvatar
           src={comment.author?.image}
@@ -56,19 +56,19 @@ function CommentItem({ comment, postId, onReplyAdded }) {
         {/* Comment Body */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[13px] font-semibold text-white truncate">{comment.author?.name}</span>
-            <span className="text-[11px] text-white/30 whitespace-nowrap">
+            <span className="text-[13px] font-semibold text-gray-900 dark:text-white truncate">{comment.author?.name}</span>
+            <span className="text-[11px] text-gray-500 dark:text-white/30 whitespace-nowrap">
               {formatDate(comment.createdAt)}
             </span>
           </div>
-          <p className="text-[13px] leading-relaxed text-white/70 whitespace-pre-wrap break-words">{comment.content}</p>
+          <p className="text-[13px] leading-relaxed text-gray-700 dark:text-white/70 whitespace-pre-wrap break-words">{comment.content}</p>
 
           {/* Actions */}
           <div className="flex items-center gap-3 mt-2">
             {session && (
               <button
                 onClick={() => setShowReply(!showReply)}
-                className="text-[10px] font-semibold text-white/30 hover:text-primary-400 transition-colors uppercase tracking-wider"
+                className="text-[10px] font-semibold text-gray-500 hover:text-primary-600 dark:text-white/30 dark:hover:text-primary-400 transition-colors uppercase tracking-wider"
               >
                 Reply
               </button>
@@ -76,7 +76,7 @@ function CommentItem({ comment, postId, onReplyAdded }) {
             {comment.replies?.length > 0 && (
               <button
                 onClick={() => setShowReplies(!showReplies)}
-                className="flex items-center gap-1 text-[10px] font-semibold text-primary-400 uppercase tracking-wider"
+                className="flex items-center gap-1 text-[10px] font-semibold text-primary-600 dark:text-primary-400 hover:underline uppercase tracking-wider"
               >
                 {showReplies ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 {comment.replies.length} {comment.replies.length === 1 ? "reply" : "replies"}
@@ -98,7 +98,7 @@ function CommentItem({ comment, postId, onReplyAdded }) {
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Write a reply..."
-                  className="flex-1 h-8 bg-white/[0.03] border border-white/[0.06] rounded-lg px-3 text-[13px] text-white/80 focus:outline-none focus:border-primary-500/40 transition-all placeholder:text-white/15"
+                  className="flex-1 h-8 bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] rounded-lg px-3 text-[13px] text-gray-800 dark:text-white/80 focus:outline-none focus:border-primary-500/40 transition-all placeholder:text-gray-400 dark:placeholder:text-white/15"
                 />
                 <button
                   type="submit"
@@ -118,7 +118,7 @@ function CommentItem({ comment, postId, onReplyAdded }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-3 pl-3 border-l border-white/[0.04] space-y-3"
+                className="mt-3 pl-3 border-l border-gray-200 dark:border-white/[0.04] space-y-3"
               >
                 {comment.replies.map((reply) => (
                   <div key={reply._id} className="flex gap-2.5">
@@ -129,10 +129,10 @@ function CommentItem({ comment, postId, onReplyAdded }) {
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-[12px] font-semibold text-white truncate">{reply.author?.name}</span>
-                        <span className="text-[10px] text-white/25">{formatDate(reply.createdAt)}</span>
+                        <span className="text-[12px] font-semibold text-gray-900 dark:text-white truncate">{reply.author?.name}</span>
+                        <span className="text-[10px] text-gray-500 dark:text-white/25">{formatDate(reply.createdAt)}</span>
                       </div>
-                      <p className="text-[12px] leading-relaxed text-white/60 whitespace-pre-wrap break-words">{reply.content}</p>
+                      <p className="text-[12px] leading-relaxed text-gray-600 dark:text-white/60 whitespace-pre-wrap break-words">{reply.content}</p>
                     </div>
                   </div>
                 ))}
@@ -203,9 +203,9 @@ export default function CommentSection({ postId }) {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-white/80 flex items-center gap-2 px-1">
+      <h3 className="text-sm font-semibold text-gray-800 dark:text-white/80 flex items-center gap-2 px-1">
         <MessageCircle className="w-4 h-4 text-primary-500" />
-        Comments {comments.length > 0 && <span className="text-white/30 font-medium">({comments.length})</span>}
+        Comments {comments.length > 0 && <span className="text-gray-500 dark:text-white/30 font-medium">({comments.length})</span>}
       </h3>
 
       {/* New Comment Input */}
@@ -216,7 +216,7 @@ export default function CommentSection({ postId }) {
             name={session.user?.name}
             size="sm"
           />
-          <div className="flex-1 flex flex-col bg-[#0B1120] border border-white/[0.06] rounded-xl overflow-hidden focus-within:border-primary-500/30 transition-all duration-200">
+          <div className="flex-1 flex flex-col bg-gray-50 dark:bg-[#0B1120] border border-gray-200 dark:border-white/[0.06] rounded-xl overflow-hidden focus-within:border-primary-500/30 transition-all duration-200 shadow-sm">
             <textarea
               value={newComment}
               onChange={(e) => {
@@ -226,10 +226,10 @@ export default function CommentSection({ postId }) {
               }}
               rows={2}
               placeholder="What are your thoughts?"
-              className="w-full bg-transparent min-h-[48px] max-h-[144px] px-3 py-2.5 text-[13px] text-white/80 resize-none focus:outline-none placeholder:text-white/15 overflow-y-auto"
+              className="w-full bg-transparent min-h-[48px] max-h-[144px] px-3 py-2.5 text-[13px] text-gray-900 dark:text-white/80 resize-none focus:outline-none placeholder:text-gray-400 dark:placeholder:text-white/15 overflow-y-auto"
             />
-            <div className="flex justify-between items-center px-3 py-2 border-t border-white/[0.04] bg-white/[0.01]">
-              <span className="text-[10px] text-white/15 font-semibold uppercase tracking-wider">Markdown</span>
+            <div className="flex justify-between items-center px-3 py-2 border-t border-gray-100 dark:border-white/[0.04] bg-gray-100/50 dark:bg-white/[0.01]">
+              <span className="text-[10px] text-gray-400 dark:text-white/15 font-semibold uppercase tracking-wider">Markdown</span>
               <button
                 type="submit"
                 disabled={!newComment.trim() || submitting}
@@ -246,7 +246,7 @@ export default function CommentSection({ postId }) {
           </div>
         </form>
       ) : (
-        <div className="bg-[#0B1120] border border-white/[0.06] rounded-xl p-5 text-center text-white/30">
+        <div className="bg-gray-50 dark:bg-[#0B1120] border border-gray-200 dark:border-white/[0.06] rounded-xl p-5 text-center text-gray-500 dark:text-white/30 shadow-sm">
           <p className="text-xs font-medium">Please log in to leave a comment.</p>
         </div>
       )}
@@ -255,19 +255,19 @@ export default function CommentSection({ postId }) {
       {loading ? (
         <div className="space-y-3 px-1">
           {[1, 2].map((i) => (
-            <div key={i} className="flex gap-3 p-3 rounded-xl bg-white/[0.01] border border-white/[0.04] animate-pulse">
-              <div className="w-8 h-8 rounded-full bg-white/5" />
+            <div key={i} className="flex gap-3 p-3 rounded-xl bg-gray-50/50 dark:bg-white/[0.01] border border-gray-100 dark:border-white/[0.04] animate-pulse">
+              <div className="w-8 h-8 rounded-full skeleton" />
               <div className="flex-1 space-y-2">
-                <div className="h-3 w-24 bg-white/5 rounded" />
-                <div className="h-3 w-full bg-white/[0.03] rounded" />
-                <div className="h-3 w-3/4 bg-white/[0.03] rounded" />
+                <div className="h-3 w-24 skeleton" />
+                <div className="h-3 w-full skeleton" />
+                <div className="h-3 w-3/4 skeleton" />
               </div>
             </div>
           ))}
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-8 text-white/15">
-          <MessageCircle className="w-7 h-7 mx-auto mb-2 opacity-30" />
+        <div className="text-center py-8 text-gray-400 dark:text-white/15">
+          <MessageCircle className="w-7 h-7 mx-auto mb-2 opacity-30 text-gray-500 dark:text-white" />
           <p className="text-xs font-medium">No comments yet. Be the first!</p>
         </div>
       ) : (

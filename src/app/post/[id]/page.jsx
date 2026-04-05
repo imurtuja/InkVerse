@@ -150,7 +150,7 @@ export default function PostPage({ params }) {
       <div className="mt-4 space-y-3">
         <div className="h-5 w-28 skeleton" />
         {[1, 2].map((i) => (
-          <div key={i} className="flex gap-3 p-3 rounded-xl bg-white dark:bg-white/[0.01] border border-gray-100 dark:border-white/[0.04]">
+          <div key={i} className="flex gap-3 p-3 rounded-xl bg-gray-50/50 dark:bg-white/[0.01] border border-gray-100 dark:border-white/[0.04]">
             <div className="w-8 h-8 rounded-full skeleton" />
             <div className="flex-1 space-y-2">
               <div className="h-3.5 w-24 skeleton" />
