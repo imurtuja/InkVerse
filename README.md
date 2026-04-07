@@ -142,9 +142,9 @@ InkVerse features a custom-built moderation engine that evaluates every new post
 ```
 ┌─────────────────────────────────────────────────────┐
 │  LAYER 1: String Analysis                           │
-│  ├── Bad word / toxic language detection             │
-│  ├── Excessive URL / link spam detection             │
-│  └── Repeated character spam detection               │
+│  ├── Bad word / toxic language detection            │
+│  ├── Excessive URL / link spam detection            │
+│  └── Repeated character spam detection              │
 │                                                     │
 │  LAYER 2: Behavioral Analysis                       │
 │  ├── Rapid posting detection (5+ posts / 10 min)    │
