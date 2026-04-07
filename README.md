@@ -4,7 +4,7 @@
 
 ### *Where Code Meets Poetry*
 
-A production-grade social content platform for developers, poets, and creators to share code snippets, poetry, shayri, quotes, and more — all in one beautifully crafted space.
+A production-grade social content platform for developers, poets, and creators to share code snippets, poetry, shayri, quotes, and more - all in one beautifully crafted space.
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-inkverse.murtuja.in-4f46e5?style=for-the-badge)](https://inkverse.murtuja.in)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.1-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -14,9 +14,6 @@ A production-grade social content platform for developers, poets, and creators t
 
 <br/>
 
-<img src="docs/screenshots/hero.png" alt="InkVerse Landing Page" width="100%" style="border-radius: 12px; border: 1px solid #1e293b;" />
-
-<br/>
 
 <p>
   <a href="https://inkverse.murtuja.in">View Live Site</a> •
@@ -43,7 +40,7 @@ A production-grade social content platform for developers, poets, and creators t
     </td>
     <td>
       <p>
-        Hi! I'm <strong>Murtuja</strong>, a passionate full-stack developer who loves building premium, production-grade web applications. InkVerse is my flagship project — a social platform that bridges the worlds of programming and creative writing.
+        Hi! I'm <strong>Murtuja</strong>, a passionate full-stack developer who loves building premium, production-grade web applications. InkVerse is my flagship project * a social platform that bridges the worlds of programming and creative writing.
       </p>
       <p>
         I designed and built every aspect of this platform from scratch, including the backend API architecture, the real-time notification system, the 3-layer content moderation engine, and the pixel-perfect dark-themed UI. My goal was to prove that indie developers can build polished SaaS products that rival established platforms.
@@ -51,7 +48,7 @@ A production-grade social content platform for developers, poets, and creators t
       <p>
         <a href="https://www.murtuja.in">🌐 Portfolio</a> •
         <a href="https://github.com/imurtuja">💻 GitHub</a> •
-        <a href="https://twitter.com/imurtuja">🐦 Twitter/X</a>
+        <a href="https://www.linkedin.com/in/imurtuja">🐦 Iinkedin</a>
       </p>
     </td>
   </tr>
@@ -61,16 +58,16 @@ A production-grade social content platform for developers, poets, and creators t
 
 ## ✨ Features
 
-InkVerse is not a toy project — it's a fully functional, production-deployed platform with **30+ API endpoints**, **8 database models**, **automated content moderation**, and professional-grade infrastructure. Here's what's inside:
+InkVerse is not a toy project - it's a fully functional, production-deployed platform with **30+ API endpoints**, **8 database models**, **automated content moderation**, and professional-grade infrastructure. Here's what's inside:
 
 ### 📝 Content Creation & Sharing
 
 | Feature | Description |
 |:---|:---|
-| **7 Content Categories** | `Code` · `Poetry` · `Shayri` · `Quote` · `Song` · `Note` · `General` — each with a unique badge, icon, and styling |
+| **7 Content Categories** | `Code` · `Poetry` · `Shayri` · `Quote` · `Song` · `Note` · `General` - each with a unique badge, icon, and styling |
 | **Rich Markdown Editor** | Full `react-markdown` support with GFM tables, headings, bold, italic, lists, links, and images |
 | **Syntax-Highlighted Code** | Code blocks rendered with `rehype-highlight` and a custom `CodeBlock` component with copy-to-clipboard |
-| **Poetry Preservation** | Line breaks and indentation are fully preserved — your verses read exactly as you wrote them |
+| **Poetry Preservation** | Line breaks and indentation are fully preserved - your verses read exactly as you wrote them |
 | **Post Tagging** | Tag-based organization with clickable `#hashtags` that deep-link into search results |
 | **Image Attachments** | Upload and display images within posts |
 
@@ -83,7 +80,7 @@ InkVerse is not a toy project — it's a fully functional, production-deployed p
 | **Like System** | Optimistic UI updates with instant feedback; server reconciliation on failure |
 | **Commenting** | Threaded comment section under each post with real-time count updates |
 | **Share Modal** | One-tap sharing to X (Twitter), WhatsApp, Facebook, Email, or copy a short link |
-| **Post Reporting** | Users can flag content as Spam, Abuse, or Other — reports are tracked and reviewed |
+| **Post Reporting** | Users can flag content as Spam, Abuse, or Other - reports are tracked and reviewed |
 | **Content Clamping** | Long posts are truncated with a "Show more / Show less" toggle |
 
 ### 👤 User Profiles & Social Graph
@@ -92,7 +89,7 @@ InkVerse is not a toy project — it's a fully functional, production-deployed p
 |:---|:---|
 | **Dynamic Profile Pages** | Gradient banner, avatar, bio, join date, and post/follower/following counts |
 | **Follow / Unfollow** | Full bidirectional follow system with optimistic UI |
-| **Edit Profile Modal** | In-place editing of name, bio, and avatar — overlay modal from the profile page |
+| **Edit Profile Modal** | In-place editing of name, bio, and avatar - overlay modal from the profile page |
 | **User Posts Grid** | All posts by a user listed below their profile header |
 
 ### 🔐 Authentication & Security
@@ -104,13 +101,7 @@ InkVerse is not a toy project — it's a fully functional, production-deployed p
 | **Password Reset** | Secure, time-limited (5 min) password reset flow with single-use tokens |
 | **Welcome Emails** | Automated onboarding emails sent to every new user |
 | **Encrypted Passwords** | `bcryptjs` hashing for credential-based accounts |
-| **Role Protection** | Mongoose model hooks prevent `role` escalation via any API — admin role can only be set directly in the database |
-
-<div align="center">
-  <img src="docs/screenshots/login.png" alt="InkVerse Login Page" width="100%" style="border-radius: 12px; border: 1px solid #1e293b;" />
-  <br/>
-  <sub>OAuth + Credential login with Google & GitHub integration</sub>
-</div>
+| **Role Protection** | Mongoose model hooks prevent `role` escalation via any API - admin role can only be set directly in the database |
 
 <br/>
 
@@ -118,7 +109,7 @@ InkVerse is not a toy project — it's a fully functional, production-deployed p
 
 | Feature | Description |
 |:---|:---|
-| **Notification Types** | `Like` · `Comment` · `Follow` · `Mention` — each with unique icons and color-coded badges |
+| **Notification Types** | `Like` · `Comment` · `Follow` · `Mention` - each with unique icons and color-coded badges |
 | **Unread Tracking** | Badge count in the navbar with Zustand-powered global state sync |
 | **Mark All as Read** | One-tap batch read operation |
 | **Contextual Deep Links** | Each notification links to the relevant post or user profile |
@@ -129,7 +120,7 @@ InkVerse is not a toy project — it's a fully functional, production-deployed p
 |:---|:---|
 | **Analytics Overview** | Metric cards for Total Users, Daily Posts, Total Posts, Active Bans, and Pending Flags |
 | **Engagement Charts** | `Recharts`-powered `LineChart` (Posts & Signups trends) and `BarChart` (Moderation Load) |
-| **High-Risk Users Panel** | Table of users with elevated risk scores — color-coded threat severity |
+| **High-Risk Users Panel** | Table of users with elevated risk scores - color-coded threat severity |
 | **User Management** | Admin routes for viewing, searching, banning, and resetting passwords for users |
 | **Post Management** | Admin routes for reviewing, hiding, and removing flagged content |
 | **Appeal System** | Banned users can submit appeals; admins can review and resolve them |
@@ -142,9 +133,9 @@ InkVerse features a custom-built moderation engine that evaluates every new post
 ```
 ┌─────────────────────────────────────────────────────┐
 │  LAYER 1: String Analysis                           │
-│  ├── Bad word / toxic language detection             │
-│  ├── Excessive URL / link spam detection             │
-│  └── Repeated character spam detection               │
+│  ├── Bad word / toxic language detection            │
+│  ├── Excessive URL / link spam detection            │
+│  └── Repeated character spam detection              │
 │                                                     │
 │  LAYER 2: Behavioral Analysis                       │
 │  ├── Rapid posting detection (5+ posts / 10 min)    │
@@ -165,7 +156,7 @@ Posts that score ≥ 5 are automatically flagged, an auto-report is generated, a
 | Feature | Description |
 |:---|:---|
 | **Full-Text Search** | MongoDB text indexes across posts (content + tags) and users (name + username) |
-| **Debounced Real-Time Search** | 300ms debounce with URL sync — search-as-you-type with no page reloads |
+| **Debounced Real-Time Search** | 300ms debounce with URL sync - search-as-you-type with no page reloads |
 | **Filter by Type** | Toggle between `All` · `Posts` · `Users` results |
 | **Tag Search** | Click any `#tag` in the feed to instantly search for related posts |
 
@@ -173,28 +164,28 @@ Posts that score ≥ 5 are automatically flagged, an auto-report is generated, a
 
 | Feature | Description |
 |:---|:---|
-| **Dark Mode First** | Full dark/light theme with `next-themes` — HSL-based CSS variable system |
+| **Dark Mode First** | Full dark/light theme with `next-themes` - HSL-based CSS variable system |
 | **Glass Morphism** | Frosted-glass cards and navigation with `backdrop-blur-xl` |
 | **Framer Motion** | Animated page transitions, fade-up entrances, and staggered list reveals |
 | **Responsive Mobile Nav** | Bottom tab navigation on mobile with contextual active states |
-| **Skeleton Loading** | Every page has pixel-perfect skeleton loading states — no layout shift |
+| **Skeleton Loading** | Every page has pixel-perfect skeleton loading states - no layout shift |
 | **Custom Fonts** | `Inter` (body), `Playfair Display` (serifs), `JetBrains Mono` (code) via `next/font` |
 | **Dual-Layer Avatar System** | Avatar preloading with fallback initials to eliminate image pop-in |
 | **Toast Notifications** | `react-hot-toast` with theme-aware branded toasts |
 
 ### 📄 Additional Pages
 
-- **About** — Platform description with the "Syntax & Soul" and "Rhythmic Verses" philosophy cards
-- **Contact** — Reach out to the developer
-- **Privacy Policy** — Platform privacy terms
-- **Terms of Service** — User agreement
-- **Banned Page** — Custom page for banned users with ban reason and appeal link
+- **About** - Platform description with the "Syntax & Soul" and "Rhythmic Verses" philosophy cards
+- **Contact** - Reach out to the developer
+- **Privacy Policy** - Platform privacy terms
+- **Terms of Service** - User agreement
+- **Banned Page** - Custom page for banned users with ban reason and appeal link
 
 ### 🔧 SEO & Performance
 
 - **Dynamic `robots.js`** and **`sitemap.js`** for search engine indexing
 - **Open Graph & Twitter Cards** with custom OG images
-- **Optimized metadata** — Per-page `title`, `description`, and `keywords`
+- **Optimized metadata** - Per-page `title`, `description`, and `keywords`
 - **Dynamic favicon** generated via `icon.js`
 - **Service Worker** (`sw.js`) for caching and offline resilience
 
@@ -436,7 +427,7 @@ The recommended deployment platform is [Vercel](https://vercel.com):
 1. Push your code to GitHub
 2. Import the repository into Vercel
 3. Add all environment variables from `.env.local` to Vercel's Settings → Environment Variables
-4. Deploy — Vercel auto-detects Next.js and configures the build
+4. Deploy - Vercel auto-detects Next.js and configures the build
 
 ---
 
@@ -454,11 +445,11 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ## 📬 Contact
 
-**Murtuja** — Full-Stack Developer
+**Murtuja** - Full-Stack Developer
 
 - 🌐 Website: [murtuja.in](https://www.murtuja.in)
-- 📧 Email: [inkverse.murtuja@gmail.com](mailto:inkverse.murtuja@gmail.com)
-- 🐦 Twitter: [@imurtuja](https://twitter.com/imurtuja)
+- 📧 Email: [murtuja.dev@gmail.com](mailto:murtuja.dev@gmail.com)
+- 🐦 Linkedin: [@imurtuja](https://www.linkedin.com/in/imurtuja)
 - 💻 GitHub: [@imurtuja](https://github.com/imurtuja)
 
 ---
