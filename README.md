@@ -1,10 +1,12 @@
 <div align="center">
 
-# 🪶 InkVerse
+# <img src="https://api.iconify.design/mdi:feather.svg?color=%234f46e5" width="36" align="center" /> InkVerse
 
 ### *Where Code Meets Poetry*
 
 A production-grade social content platform for developers, poets, and creators to share code snippets, poetry, shayri, quotes, and more - all in one beautifully crafted space.
+
+<br/>
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-inkverse.murtuja.in-4f46e5?style=for-the-badge)](https://inkverse.murtuja.in)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.1-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -16,18 +18,18 @@ A production-grade social content platform for developers, poets, and creators t
 
 
 <p>
-  <a href="https://inkverse.murtuja.in">View Live Site</a> •
-  <a href="#-features">Features</a> •
-  <a href="#%EF%B8%8F-tech-stack">Tech Stack</a> •
-  <a href="#-getting-started">Setup Guide</a> •
-  <a href="#-architecture">Architecture</a>
+  <a href="https://inkverse.murtuja.in"><b>Live Site</b></a> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#--features"><b>Features</b></a> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#--tech-stack"><b>Tech Stack</b></a> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#--getting-started"><b>Setup Guide</b></a> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#--architecture"><b>Architecture</b></a>
 </p>
 
 </div>
 
 ---
 
-## 👨‍💻 About the Developer
+## <img src="https://api.iconify.design/mdi:account-badge.svg?color=%233b82f6" width="28" align="center" /> About the Developer
 
 <table>
   <tr>
@@ -40,15 +42,16 @@ A production-grade social content platform for developers, poets, and creators t
     </td>
     <td>
       <p>
-        Hi! I'm <strong>Murtuja</strong>, a passionate full-stack developer who loves building premium, production-grade web applications. InkVerse is my flagship project * a social platform that bridges the worlds of programming and creative writing.
+        Hi! I'm <strong>Murtuja</strong>, a passionate full-stack developer who loves building premium, production-grade web applications. InkVerse is my flagship project - a social platform that bridges the worlds of programming and creative writing.
       </p>
       <p>
         I designed and built every aspect of this platform from scratch, including the backend API architecture, the real-time notification system, the 3-layer content moderation engine, and the pixel-perfect dark-themed UI. My goal was to prove that indie developers can build polished SaaS products that rival established platforms.
       </p>
+      <br/>
       <p>
-        <a href="https://www.murtuja.in">🌐 Portfolio</a> •
-        <a href="https://github.com/imurtuja">💻 GitHub</a> •
-        <a href="https://www.linkedin.com/in/imurtuja">🐦 Iinkedin</a>
+        <a href="https://www.murtuja.in"><img src="https://img.shields.io/badge/Portfolio-murtuja.in-2563EB?style=flat&logo=globe&logoColor=white" alt="Portfolio" /></a>
+        <a href="https://github.com/imurtuja"><img src="https://img.shields.io/badge/GitHub-imurtuja-181717?style=flat&logo=github&logoColor=white" alt="GitHub" /></a>
+        <a href="https://twitter.com/imurtuja"><img src="https://img.shields.io/badge/Twitter-imurtuja-1DA1F2?style=flat&logo=twitter&logoColor=white" alt="Twitter" /></a>
       </p>
     </td>
   </tr>
@@ -56,11 +59,11 @@ A production-grade social content platform for developers, poets, and creators t
 
 ---
 
-## ✨ Features
+## <img src="https://api.iconify.design/mdi:star-four-points.svg?color=%23eab308" width="28" align="center" /> Features
 
 InkVerse is not a toy project - it's a fully functional, production-deployed platform with **30+ API endpoints**, **8 database models**, **automated content moderation**, and professional-grade infrastructure. Here's what's inside:
 
-### 📝 Content Creation & Sharing
+### <img src="https://api.iconify.design/mdi:pencil-outline.svg?color=%238b5cf6" width="24" align="center" /> Content Creation & Sharing
 
 | Feature | Description |
 |:---|:---|
@@ -71,7 +74,7 @@ InkVerse is not a toy project - it's a fully functional, production-deployed pla
 | **Post Tagging** | Tag-based organization with clickable `#hashtags` that deep-link into search results |
 | **Image Attachments** | Upload and display images within posts |
 
-### 🏠 Social Feed System
+### <img src="https://api.iconify.design/mdi:animation-play-outline.svg?color=%23ef4444" width="24" align="center" /> Social Feed System
 
 | Feature | Description |
 |:---|:---|
@@ -83,7 +86,7 @@ InkVerse is not a toy project - it's a fully functional, production-deployed pla
 | **Post Reporting** | Users can flag content as Spam, Abuse, or Other - reports are tracked and reviewed |
 | **Content Clamping** | Long posts are truncated with a "Show more / Show less" toggle |
 
-### 👤 User Profiles & Social Graph
+### <img src="https://api.iconify.design/mdi:account-group.svg?color=%2310b981" width="24" align="center" /> User Profiles & Social Graph
 
 | Feature | Description |
 |:---|:---|
@@ -92,7 +95,7 @@ InkVerse is not a toy project - it's a fully functional, production-deployed pla
 | **Edit Profile Modal** | In-place editing of name, bio, and avatar - overlay modal from the profile page |
 | **User Posts Grid** | All posts by a user listed below their profile header |
 
-### 🔐 Authentication & Security
+### <img src="https://api.iconify.design/mdi:lock-check.svg?color=%2314b8a6" width="24" align="center" /> Authentication & Security
 
 | Feature | Description |
 |:---|:---|
@@ -103,9 +106,15 @@ InkVerse is not a toy project - it's a fully functional, production-deployed pla
 | **Encrypted Passwords** | `bcryptjs` hashing for credential-based accounts |
 | **Role Protection** | Mongoose model hooks prevent `role` escalation via any API - admin role can only be set directly in the database |
 
+<div align="center">
+  <img src="docs/screenshots/login.png" alt="InkVerse Login Page" width="100%" style="border-radius: 12px; border: 1px solid #1e293b;" />
+  <br/>
+  <sub>OAuth + Credential login with Google & GitHub integration</sub>
+</div>
+
 <br/>
 
-### 🔔 Real-Time Notifications
+### <img src="https://api.iconify.design/mdi:bell-ringing.svg?color=%23f59e0b" width="24" align="center" /> Real-Time Notifications
 
 | Feature | Description |
 |:---|:---|
@@ -114,7 +123,7 @@ InkVerse is not a toy project - it's a fully functional, production-deployed pla
 | **Mark All as Read** | One-tap batch read operation |
 | **Contextual Deep Links** | Each notification links to the relevant post or user profile |
 
-### 🛡️ Admin Dashboard & Moderation
+### <img src="https://api.iconify.design/mdi:shield-check.svg?color=%233b82f6" width="24" align="center" /> Admin Dashboard & Moderation
 
 | Feature | Description |
 |:---|:---|
@@ -126,16 +135,16 @@ InkVerse is not a toy project - it's a fully functional, production-deployed pla
 | **Appeal System** | Banned users can submit appeals; admins can review and resolve them |
 | **Report Management** | Track all user-submitted and auto-generated reports with severity levels |
 
-### 🤖 3-Layer Automated Content Moderation
+### <img src="https://api.iconify.design/mdi:robot-outline.svg?color=%23ef4444" width="24" align="center" /> 3-Layer Automated Content Moderation
 
 InkVerse features a custom-built moderation engine that evaluates every new post through multiple detection layers:
 
 ```
 ┌─────────────────────────────────────────────────────┐
 │  LAYER 1: String Analysis                           │
-│  ├── Bad word / toxic language detection            │
-│  ├── Excessive URL / link spam detection            │
-│  └── Repeated character spam detection              │
+│  ├── Bad word / toxic language detection             │
+│  ├── Excessive URL / link spam detection             │
+│  └── Repeated character spam detection               │
 │                                                     │
 │  LAYER 2: Behavioral Analysis                       │
 │  ├── Rapid posting detection (5+ posts / 10 min)    │
@@ -151,7 +160,7 @@ InkVerse features a custom-built moderation engine that evaluates every new post
 
 Posts that score ≥ 5 are automatically flagged, an auto-report is generated, and the author's cumulative `riskScore` is incremented. High-severity content is instantly hidden from the feed.
 
-### 🔍 Search & Discovery
+### <img src="https://api.iconify.design/mdi:magnify.svg?color=%238b5cf6" width="24" align="center" /> Search & Discovery
 
 | Feature | Description |
 |:---|:---|
@@ -160,7 +169,7 @@ Posts that score ≥ 5 are automatically flagged, an auto-report is generated, a
 | **Filter by Type** | Toggle between `All` · `Posts` · `Users` results |
 | **Tag Search** | Click any `#tag` in the feed to instantly search for related posts |
 
-### 🎨 UI / UX Design System
+### <img src="https://api.iconify.design/mdi:palette.svg?color=%23f59e0b" width="24" align="center" /> UI / UX Design System
 
 | Feature | Description |
 |:---|:---|
@@ -173,7 +182,7 @@ Posts that score ≥ 5 are automatically flagged, an auto-report is generated, a
 | **Dual-Layer Avatar System** | Avatar preloading with fallback initials to eliminate image pop-in |
 | **Toast Notifications** | `react-hot-toast` with theme-aware branded toasts |
 
-### 📄 Additional Pages
+### <img src="https://api.iconify.design/mdi:file-document-multiple.svg?color=%2364748b" width="24" align="center" /> Additional Pages
 
 - **About** - Platform description with the "Syntax & Soul" and "Rhythmic Verses" philosophy cards
 - **Contact** - Reach out to the developer
@@ -181,7 +190,7 @@ Posts that score ≥ 5 are automatically flagged, an auto-report is generated, a
 - **Terms of Service** - User agreement
 - **Banned Page** - Custom page for banned users with ban reason and appeal link
 
-### 🔧 SEO & Performance
+### <img src="https://api.iconify.design/mdi:rocket-launch.svg?color=%2310b981" width="24" align="center" /> SEO & Performance
 
 - **Dynamic `robots.js`** and **`sitemap.js`** for search engine indexing
 - **Open Graph & Twitter Cards** with custom OG images
@@ -191,219 +200,85 @@ Posts that score ≥ 5 are automatically flagged, an auto-report is generated, a
 
 ---
 
-## 🛠️ Tech Stack
+## <img src="https://api.iconify.design/mdi:code-braces.svg?color=%236366f1" width="28" align="center" /> Tech Stack
 
 <table>
   <tr>
-    <td align="center" width="96">
+    <td align="center" width="110">
       <img src="https://skillicons.dev/icons?i=nextjs" width="48" height="48" alt="Next.js" />
       <br/><sub><b>Next.js 16</b></sub>
     </td>
-    <td align="center" width="96">
+    <td align="center" width="110">
       <img src="https://skillicons.dev/icons?i=react" width="48" height="48" alt="React" />
       <br/><sub><b>React 19</b></sub>
     </td>
-    <td align="center" width="96">
-      <img src="https://skillicons.dev/icons?i=mongodb" width="48" height="48" alt="MongoDB" />
-      <br/><sub><b>MongoDB</b></sub>
-    </td>
-    <td align="center" width="96">
+    <td align="center" width="110">
       <img src="https://skillicons.dev/icons?i=tailwind" width="48" height="48" alt="Tailwind" />
       <br/><sub><b>Tailwind v4</b></sub>
     </td>
-    <td align="center" width="96">
-      <img src="https://skillicons.dev/icons?i=nodejs" width="48" height="48" alt="Node.js" />
-      <br/><sub><b>Node.js</b></sub>
-    </td>
-    <td align="center" width="96">
-      <img src="https://skillicons.dev/icons?i=vercel" width="48" height="48" alt="Vercel" />
-      <br/><sub><b>Vercel</b></sub>
+    <td align="center" width="110">
+      <img src="https://skillicons.dev/icons?i=mongodb" width="48" height="48" alt="MongoDB" />
+      <br/><sub><b>MongoDB</b></sub>
     </td>
   </tr>
 </table>
 
 ### Full Dependency Breakdown
 
-| Category | Technology | Purpose |
-|:---|:---|:---|
-| **Framework** | Next.js 16.2.1 (App Router) | Server/client rendering, API routes, file-based routing |
-| **UI Library** | React 19.2.4 | Component architecture, hooks, server components |
-| **Database** | MongoDB + Mongoose 9.3 | Document database with schema validation and indexes |
-| **Styling** | Tailwind CSS v4 | Utility-first CSS with dark mode and custom design tokens |
-| **Animations** | Framer Motion 12.38 | Page transitions, staggered reveals, micro-interactions |
-| **Auth** | NextAuth v5 (Beta) | Google/GitHub OAuth + Credentials provider, JWT sessions |
-| **State** | Zustand 5.0 | Global state (notification count, user preferences) |
-| **Forms** | React Hook Form 7.72 + Zod 4.3 | High-performance forms with schema-based validation |
-| **Markdown** | react-markdown + remark-gfm + rehype-highlight | Content rendering with code syntax highlighting |
-| **Charts** | Recharts 3.8 | Admin dashboard analytics visualization |
-| **Icons** | Lucide React 1.7 | 1000+ consistent SVG icons |
-| **Email** | SendGrid + Nodemailer | Transactional emails (OTP, Welcome, Password Reset) |
-| **Security** | bcryptjs 3.0 | Password hashing |
-| **Theming** | next-themes 0.4 | Dark/light mode with system preference detection |
-| **Toasts** | react-hot-toast 2.6 | User notifications and feedback |
-| **Utilities** | clsx, tailwind-merge, date-fns | Conditional classes, date formatting, class merging |
+| Icon | Category | Technology | Purpose |
+|:---:|:---|:---|:---|
+| <img src="https://skillicons.dev/icons?i=nextjs" width="20" /> | **Framework** | Next.js 16.2.1 | Server/client rendering, API routes, file-based routing |
+| <img src="https://skillicons.dev/icons?i=react" width="20" /> | **UI Library** | React 19.2.4 | Component architecture, hooks, server components |
+| <img src="https://skillicons.dev/icons?i=mongodb" width="20" /> | **Database** | Mongoose 9.3 | Document database with schema validation and indexes |
+| <img src="https://skillicons.dev/icons?i=tailwind" width="20" /> | **Styling** | Tailwind CSS v4 | Utility-first CSS with dark mode and custom design tokens |
+| <img src="https://skillicons.dev/icons?i=framer" width="20" /> | **Animations** | Framer Motion | Page transitions, staggered reveals, micro-interactions |
+| <img src="https://api.iconify.design/mdi:shield-key.svg" width="20" /> | **Auth** | NextAuth v5 (Beta) | Google/GitHub OAuth + Credentials provider, JWT sessions |
+| <img src="https://api.iconify.design/mdi:state-machine.svg" width="20" /> | **State** | Zustand 5.0 | Global state (notification count, user preferences) |
+| <img src="https://api.iconify.design/mdi:form-textbox.svg" width="20" /> | **Forms** | React Hook Form | High-performance forms with Zod schema validation |
+| <img src="https://api.iconify.design/mdi:markdown.svg" width="20" /> | **Markdown** | react-markdown | Content rendering with remark-gfm and rehype-highlight |
 
 ---
 
-## 🏗️ Architecture
+## <img src="https://api.iconify.design/mdi:family-tree.svg?color=%23ec4899" width="28" align="center" /> Architecture
 
-```
+```text
 inkverse/
 ├── src/
 │   ├── app/                          # Next.js App Router
 │   │   ├── layout.js                 # Root layout (fonts, providers, metadata)
 │   │   ├── page.js                   # Landing page
 │   │   ├── globals.css               # Global styles & design tokens
-│   │   ├── icon.js                   # Dynamic favicon generator
-│   │   ├── robots.js                 # SEO robots configuration
-│   │   ├── sitemap.js                # Dynamic sitemap generator
-│   │   │
 │   │   ├── feed/                     # Social feed with infinite scroll
 │   │   ├── post/[id]/                # Post detail + comments
 │   │   ├── profile/[username]/       # User profile pages
 │   │   ├── search/                   # Full-text search (posts + users)
 │   │   ├── notifications/            # Real-time notification center
 │   │   │
-│   │   ├── login/                    # OAuth + credential login
-│   │   ├── signup/                   # Registration with email verification
-│   │   ├── verify/                   # OTP verification flow
-│   │   ├── reset-password/           # Secure password reset
-│   │   ├── banned/                   # Banned user screen + appeal
-│   │   │
-│   │   ├── about/                    # About the platform
-│   │   ├── contact/                  # Contact form
-│   │   ├── privacy/                  # Privacy policy
-│   │   ├── terms/                    # Terms of service
+│   │   ├── login/, signup/           # Auth flows + OTP verify
+│   │   ├── about/, contact/          # Information pages
 │   │   │
 │   │   ├── admin/                    # Admin dashboard
 │   │   │   ├── page.jsx              # Analytics overview (charts + metrics)
-│   │   │   ├── users/                # User management (ban, reset)
-│   │   │   ├── posts/                # Content management
-│   │   │   ├── reports/              # Report review queue
-│   │   │   ├── appeals/              # Ban appeal review
-│   │   │   └── moderation/           # Moderation tools
+│   │   │   └── users/, posts/        # Management routes
 │   │   │
 │   │   └── api/                      # RESTful API
 │   │       ├── auth/                 # NextAuth handlers
-│   │       ├── posts/                # CRUD + like + pagination
-│   │       ├── users/                # Profile + follow/unfollow
-│   │       ├── search/               # Full-text search endpoint
-│   │       ├── notifications/        # Notification CRUD + mark-read
-│   │       ├── report/               # User report submission
-│   │       ├── appeal/               # Ban appeal submission
+│   │       ├── posts/, users/        # CRUD operations
+│   │       ├── notifications/        # Notification system
 │   │       └── admin/                # Protected admin endpoints
-│   │           ├── analytics/        # Dashboard metrics
-│   │           ├── users/            # Admin user operations
-│   │           ├── posts/            # Admin post operations
-│   │           ├── reports/          # Report management
-│   │           ├── appeals/          # Appeal management
-│   │           ├── stats/            # Platform statistics
-│   │           └── reset-password/   # Admin password reset
 │   │
-│   ├── components/
-│   │   ├── layout/                   # Navbar, MobileNav, ConditionalNav, NotificationsDropdown
-│   │   ├── posts/                    # PostCard, PostEditor, CommentSection
-│   │   ├── profile/                  # EditProfileModal
-│   │   ├── admin/                    # AdminLayoutClient (sidebar nav)
-│   │   ├── providers/                # AuthProvider, ThemeProvider
-│   │   └── ui/                       # Button, Modal, UserAvatar, CodeBlock, FancyButton
-│   │
+│   ├── components/                   # Reusable React components
 │   ├── models/                       # Mongoose schemas
-│   │   ├── User.js                   # name, username, email, password, bio, role, riskScore, ban fields
-│   │   ├── Post.js                   # author, title, content, category, tags, likes, images, status
-│   │   ├── Comment.js                # author, post, content, timestamps
-│   │   ├── Notification.js           # sender, receiver, type, post, read status
-│   │   ├── Report.js                 # reporter, itemType, itemId, reason, severity, isAuto
-│   │   ├── Appeal.js                 # user, reason, status
-│   │   ├── PendingUser.js            # Pre-verification user data with OTP
-│   │   └── PasswordReset.js          # Time-limited reset tokens
-│   │
-│   ├── lib/
-│   │   ├── auth.js                   # NextAuth config (providers, callbacks, JWT)
-│   │   ├── db.js                     # MongoDB connection singleton
-│   │   ├── mail.js                   # SendGrid email templates (OTP, Welcome, Reset)
-│   │   ├── moderationService.js      # 3-layer auto-moderation engine
-│   │   ├── require-admin.js          # Admin route protection middleware
-│   │   ├── utils.js                  # cn(), formatDate(), helper functions
-│   │   └── defaultAvatarBase64.js    # Fallback avatar as base64
-│   │
-│   └── store/
-│       └── useStore.js               # Zustand global state (unread notifications)
+│   ├── lib/                          # Core utilities, mail config, db connect
+│   └── store/                        # Zustand stores
 │
-├── public/
-│   └── sw.js                         # Service worker for caching
-├── package.json
-├── next.config.js
-└── README.md
+├── public/                           # Static assets
+└── package.json
 ```
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Node.js** ≥ 18.17.0
-- **MongoDB** instance (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
-- **SendGrid** account (for transactional emails)
-- [Optional] Google & GitHub OAuth credentials
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/imurtuja/InkVerse.git
-cd InkVerse
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Configure Environment Variables
-
-Create a `.env.local` file in the project root:
-
-```env
-# ── Database ──────────────────────────────────────
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/inkverse
-
-# ── NextAuth ──────────────────────────────────────
-NEXTAUTH_SECRET=your-random-secret-key
-NEXTAUTH_URL=http://localhost:3000
-AUTH_SECRET=your-random-secret-key
-
-# ── Google OAuth ──────────────────────────────────
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# ── GitHub OAuth ──────────────────────────────────
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
-
-# ── SendGrid Email ────────────────────────────────
-SENDGRID_API_KEY=your-sendgrid-api-key
-```
-
-### 4. Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see InkVerse running locally.
-
-### 5. Build for Production
-
-```bash
-npm run build
-npm start
-```
-
----
-
-## 📊 Database Models
+## <img src="https://api.iconify.design/mdi:database.svg?color=%2310b981" width="28" align="center" /> Database Models
 
 | Model | Fields | Purpose |
 |:---|:---|:---|
@@ -418,20 +293,66 @@ npm start
 
 ---
 
-## 🌐 Deployment
+## <img src="https://api.iconify.design/mdi:rocket-launch.svg?color=%23ef4444" width="28" align="center" /> Getting Started
 
-InkVerse is deployed and live at **[inkverse.murtuja.in](https://inkverse.murtuja.in)**
+### Prerequisites
 
-The recommended deployment platform is [Vercel](https://vercel.com):
+- **Node.js** ≥ 18.17.0
+- **MongoDB** instance
+- **SendGrid** account (for transactional emails)
 
-1. Push your code to GitHub
-2. Import the repository into Vercel
-3. Add all environment variables from `.env.local` to Vercel's Settings → Environment Variables
-4. Deploy - Vercel auto-detects Next.js and configures the build
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/imurtuja/InkVerse.git
+cd InkVerse
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment
+
+Create a `.env.local` file in the project root:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+AUTH_SECRET=your_nextauth_secret
+
+# OAuth (Optional)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+# Email
+SENDGRID_API_KEY=your_sendgrid_api_key
+```
+
+### 4. Run Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see InkVerse running locally.
 
 ---
 
-## 🤝 Contributing
+## <img src="https://api.iconify.design/mdi:cloud-upload.svg?color=%233b82f6" width="28" align="center" /> Deployment
+
+InkVerse is deployed and live at **[inkverse.murtuja.in](https://inkverse.murtuja.in)**
+
+The recommended deployment platform is [Vercel](https://vercel.com). Simply import the repository, configure the environment variables, and let Vercel handle the complete Next.js build process.
+
+---
+
+## <img src="https://api.iconify.design/mdi:hand-heart.svg?color=%2310b981" width="28" align="center" /> Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/imurtuja/InkVerse/issues).
 
@@ -443,18 +364,20 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ---
 
-## 📬 Contact
+## <img src="https://api.iconify.design/mdi:email-fast.svg?color=%238b5cf6" width="28" align="center" /> Contact
 
 **Murtuja** - Full-Stack Developer
 
-- 🌐 Website: [murtuja.in](https://www.murtuja.in)
-- 📧 Email: [murtuja.dev@gmail.com](mailto:murtuja.dev@gmail.com)
-- 🐦 Linkedin: [@imurtuja](https://www.linkedin.com/in/imurtuja)
-- 💻 GitHub: [@imurtuja](https://github.com/imurtuja)
+<p>
+  <a href="https://www.murtuja.in"><img src="https://img.shields.io/badge/Portfolio-murtuja.in-2563EB?style=for-the-badge&logo=globe&logoColor=white" alt="Portfolio" /></a>
+  <a href="mailto:murtuja.dev@gmail.com"><img src="https://img.shields.io/badge/Email-murtuja.dev@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+  <a href="https://twitter.com/imurtuja"><img src="https://img.shields.io/badge/Twitter-imurtuja-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="LinkedIn" /></a>
+  <a href="https://github.com/imurtuja"><img src="https://img.shields.io/badge/GitHub-imurtuja-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+</p>
 
 ---
 
-## 📜 License
+## <img src="https://api.iconify.design/mdi:file-document.svg?color=%2364748b" width="28" align="center" /> License
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
@@ -462,7 +385,7 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <div align="center">
 
-**⭐ If you found InkVerse useful or inspiring, please consider starring the repo!**
+**<img src="https://api.iconify.design/mdi:star.svg?color=%23eab308" width="16" /> If you found InkVerse useful or inspiring, please consider starring the repo!**
 
 <br/>
 
