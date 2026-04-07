@@ -51,7 +51,7 @@ A production-grade social content platform for developers, poets, and creators t
       <p>
         <a href="https://www.murtuja.in"><img src="https://img.shields.io/badge/Portfolio-murtuja.in-2563EB?style=flat&logo=globe&logoColor=white" alt="Portfolio" /></a>
         <a href="https://github.com/imurtuja"><img src="https://img.shields.io/badge/GitHub-imurtuja-181717?style=flat&logo=github&logoColor=white" alt="GitHub" /></a>
-        <a href="https://twitter.com/imurtuja"><img src="https://img.shields.io/badge/Twitter-imurtuja-1DA1F2?style=flat&logo=twitter&logoColor=white" alt="Twitter" /></a>
+        <a href="https://www.linkedin.com/in/imurtuja"><img src="https://img.shields.io/badge/LinkedIn-imurtuja-0A66C2?style=flat&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
       </p>
     </td>
   </tr>
@@ -371,7 +371,7 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 <p>
   <a href="https://www.murtuja.in"><img src="https://img.shields.io/badge/Portfolio-murtuja.in-2563EB?style=for-the-badge&logo=globe&logoColor=white" alt="Portfolio" /></a>
   <a href="mailto:murtuja.dev@gmail.com"><img src="https://img.shields.io/badge/Email-murtuja.dev@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-  <a href="https://twitter.com/imurtuja"><img src="https://img.shields.io/badge/Twitter-imurtuja-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="LinkedIn" /></a>
+  <a href="https://www.linkedin.com/in/imurtuja"><img src="https://img.shields.io/badge/LinkedIn-imurtuja-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
   <a href="https://github.com/imurtuja"><img src="https://img.shields.io/badge/GitHub-imurtuja-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
 </p>
 
