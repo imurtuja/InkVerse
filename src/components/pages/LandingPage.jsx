@@ -43,10 +43,10 @@ export default function LandingPage() {
 
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border border-[hsl(var(--border))] text-[hsl(var(--muted-foreground))] mb-8 bg-white/5 backdrop-blur-sm">
-              <Feather className="w-4 h-4 text-primary-500" />
-              The new way to share words
-            </span>
+            <<p className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground shadow-sm backdrop-blur">
+            <Quote className="size-3.5 text-primary" />
+            Text-sharing social
+          </p>
           </motion.div>
 
           <motion.h1
